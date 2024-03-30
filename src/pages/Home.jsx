@@ -1,14 +1,13 @@
-import { Box } from "@mui/material"
+import { Box } from "@mui/material";
+
+import Slider from "../components/Slider";
 
 const Home = () => {
   return (
-    <Box sx={{
-      backgroundColor:"wheat",
-      color:"black",
-      width:"100%",
-      minHeight:"100%"
-    }}>Home</Box>
-  )
-}
+    <Box>
+      <Slider />
+    </Box>
+  );
+};
 
-export default Home
+export default Home;

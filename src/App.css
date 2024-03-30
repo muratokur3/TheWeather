@@ -6,5 +6,8 @@
 #root{
   min-width: 100vw;
   min-height: 100vh;
+}
 
+.renk{
+  color: rgba(71, 69, 69, 0.259);
 }

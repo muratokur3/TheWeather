@@ -29,7 +29,7 @@ const AddCity = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
         <Box sx={style}>
-          <SearchBar />
+          <SearchBar closeModal={handleClose}/>
         </Box>
       </Modal>
     </Box>

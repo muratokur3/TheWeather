@@ -1,10 +1,14 @@
 import axios from "axios";
+import { setCity } from "../slices/CitySlice";
 
-const getCity = () => async () => {
+const getCity = (value) => async (dispatch) => {
+  console.log(value);
   const resposne = await axios.get(
-    "https://api.openweathermap.org/data/2.5/weather?q=London&appid=3f48b6c7109d2"
+    `https://api.openweathermap.org/data/2.5/weather?lat=${value.lat}&lon=${value.lon}&appid=3a624872bbe7babf701dee83da65a57c`
   );
-  console.log(resposne.data);
+  if (resposne.status === 200) {
+    dispatch(setCity(resposne.data));
+  }
 };
 
 export { getCity };

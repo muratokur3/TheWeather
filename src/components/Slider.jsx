@@ -7,38 +7,23 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import SwipeableViews from "react-swipeable-views";
 import CityWeatherDetails from "./WeatherDetails/CityWeatherDetails";
-
-
-const images = [
-  {
-    label: "San Francisco – Oakland Bay Bridge, United States",
-    imgPath: "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
-  },
-  {
-    label: "Bird",
-    imgPath: "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60",
-  },
-  {
-    label: "Bali, Indonesia",
-    imgPath: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250",
-  },
-  {
-    label: "Goč, Serbia",
-    imgPath: "https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60",
-  },
-];
+import { useSelector } from "react-redux";
 
 function Slider() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = images.length;
+
+  const citys = useSelector((state) => state.citys);
+  const maxSteps = citys?.length;
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => (prevActiveStep + 1) % maxSteps);
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => (prevActiveStep - 1 + maxSteps) % maxSteps);
+    setActiveStep(
+      (prevActiveStep) => (prevActiveStep - 1 + maxSteps) % maxSteps
+    );
   };
 
   const handleStepChange = (step) => {
@@ -46,21 +31,42 @@ function Slider() {
   };
 
   return (
-    <Box sx={{ width:"100%",maxWidth: 700, flexGrow: 1 }}>
+    <Box sx={{ width: "100%", maxWidth: 700, flexGrow: 1 }}>
       <MobileStepper
+        sx={{
+          height: "3rem",
+          background: "#3333",
+          borderRadius: "1rem",
+          padding: "0 1rem",
+          "& .MuiMobileStepper-dot": {
+            backgroundColor: "gray",
+          },
+          "& .MuiMobileStepper-dotActive": {
+            backgroundColor: "white",
+          },
+        }}
+        variant="dots"
         steps={maxSteps}
         position="static"
         activeStep={activeStep}
         nextButton={
-          <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+          <Button size="small" onClick={handleNext} sx={{ color: "white" }}>
             Next
-            {theme.direction === "rtl" ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+            {theme.direction === "rtl" ? (
+              <KeyboardArrowLeft />
+            ) : (
+              <KeyboardArrowRight />
+            )}
           </Button>
         }
         backButton={
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+          <Button sx={{ color: "white" }} size="small" onClick={handleBack}>
             Back
-            {theme.direction === "rtl" ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+            {theme.direction === "rtl" ? (
+              <KeyboardArrowRight />
+            ) : (
+              <KeyboardArrowLeft />
+            )}
           </Button>
         }
       />
@@ -88,10 +94,10 @@ function Slider() {
             ) : null}
           </div>
         ))} */}
-      <CityWeatherDetails/>
-      <CityWeatherDetails/>
-      <CityWeatherDetails/>
-      <CityWeatherDetails/>
+
+        {citys.map((city, index) => (
+          <CityWeatherDetails city={city} key={index} />
+        ))}
       </SwipeableViews>
     </Box>
   );

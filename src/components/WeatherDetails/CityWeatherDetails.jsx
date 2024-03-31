@@ -2,8 +2,8 @@ import { Box } from "@mui/material";
 import Header from "./Header";
 import Details from "./Details";
 import FifeDay from "./FifeDay";
-
-const CityWeatherDetails = () => {
+import PropTypes from "prop-types";
+const CityWeatherDetails = ({city}) => {
   return (
     <Box
       sx={{
@@ -16,6 +16,7 @@ const CityWeatherDetails = () => {
         gap: "1rem",
       }}
     >
+    {city.name}
       <Header />
       <Details />
       <FifeDay />
@@ -24,3 +25,6 @@ const CityWeatherDetails = () => {
 };
 
 export default CityWeatherDetails;
+CityWeatherDetails.propTypes={
+  city:PropTypes.object.isRequired
+}

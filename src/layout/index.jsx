@@ -7,7 +7,7 @@ import { sessionService } from "redux-react-session";
 import Sidebar from "../components/Sidebar";
 import MobileNavigate from "../components/menu/MobileNavigate";
 import RightMenu from "../components/menu/RightMenu";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 const Layout = () => {
   //rakamlardan random bir id değeri oluşturur
   const randomId = async () => {
@@ -19,9 +19,23 @@ const Layout = () => {
     });
     await sessionService.saveUser({userId:"1"});
   };
+  const [location, setLocation] = useState(null)
   useEffect(() => {
     loggined();
-  });
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocation({
+          lat: latitude,
+          lng: longitude,
+        });
+        console.log(location); // Bu satır, konum henüz ayarlanmadan çalıştığı için muhtemelen önceki durumu veya null log'layacaktır.
+      },
+      (error) => {
+        console.error("Konum alınamadı:", error);
+      }
+    );
+  },[]);
   // const theme = useTheme();
   const isPhone = useMediaQuery("(max-width: 600px)");
   const isTablet = useMediaQuery("(min-width: 600px) and (max-width: 1234px)");

@@ -1,13 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {};
+const initialState = [];
 
 export const citySlice = createSlice({
-  name: "city",
+  name: "citys",
   initialState,
   reducers: {
     setCity: (state, action) => {
-      state.value = action.payload;
+      if (!state.find((item) => item.name === action.payload.name)) {
+        state.push(action.payload);
+      }
     },
   },
 });

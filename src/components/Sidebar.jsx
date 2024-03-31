@@ -25,6 +25,7 @@ const Sidebar = () => {
         sx={{
           display: open ? "flex" : "none",
           width: "20vw",
+          height:"100%",
           flexDirection: "column",
           alignItems: "center",
           gap: "1rem",

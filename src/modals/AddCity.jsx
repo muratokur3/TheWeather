@@ -3,14 +3,21 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import SearchBar from "../components/SearchBar";
+import { Typography } from "@mui/material";
 
 const style = {
+  width: "100%",
+  height: "100%",
   position: "absolute",
   top: "50%",
   left: "50%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: "20%",
   transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
+  bgcolor: "rgba(0, 0, 0, 0.753)",
+  // bgcolor: "red",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
@@ -22,14 +29,37 @@ const AddCity = () => {
   const handleClose = () => setOpen(false);
   return (
     <Box>
-      <Button variant="outlined" size="large" onClick={handleOpen}>Şehir Ekle</Button>
+      <Button variant="outlined" size="large" onClick={handleOpen}>
+        Şehir Ekle
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
+      >
         <Box sx={style}>
-          <SearchBar closeModal={handleClose}/>
+          <Box margin={"5% 0"}>TheWeather</Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Box display={"flex"} gap={2}>
+              <Typography variant="h5" color={"blueviolet"}>
+                TypeWeather
+              </Typography>
+              <Typography variant="h5">Hoş Geldiniz</Typography>
+            </Box>
+
+            <Typography variant="body1">
+            Hava tahminini görmek için bir konum seçin
+            </Typography>
+
+            <SearchBar closeModal={handleClose} />
+          </Box>
         </Box>
       </Modal>
     </Box>

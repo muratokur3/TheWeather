@@ -3,8 +3,8 @@ import CityCard from "./CityCard";
 import { useSelector } from "react-redux";
 
 const CityList = () => {
-  const citys = useSelector((state) => state.citys);
-  console.log(citys);
+  const weatherData = useSelector(state => state.citys.cities);
+  console.log(weatherData);
   return (
     <Box
       sx={{
@@ -14,8 +14,8 @@ const CityList = () => {
         gap: "1rem",
       }}
     >
-      {citys.map((city, index) => (
-        <CityCard city={city} key={index} />
+      {weatherData.map((city, index) => (
+        <CityCard city={city?.currentWeather} key={index} />
       ))}
     </Box>
   );

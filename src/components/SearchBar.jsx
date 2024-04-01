@@ -7,9 +7,9 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 // import { setCity } from "../redux/slices/CitySlice";
 import { useDispatch } from "react-redux";
-import { getCity } from "../redux/actions/CityActions";
+import { fetchWeatherData } from "../redux/slices/CitySlice";
 
-const SearchBar = ({closeModal}) => {
+const SearchBar = ({ closeModal }) => {
   const dispatch = useDispatch();
   const [isProgses, setIsProgses] = useState(false);
   const [citys, setCitys] = useState([]);
@@ -26,7 +26,7 @@ const SearchBar = ({closeModal}) => {
     if (value.length !== 0) {
       setIsProgses(true);
       try {
-        await dispatch(getCity(value));
+        dispatch(fetchWeatherData(value.name));
         setCitys([]);
       } catch (error) {
         console.error(error);
@@ -45,6 +45,7 @@ const SearchBar = ({closeModal}) => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
+        position: "relative",
       }}
     >
       <Box
@@ -69,7 +70,7 @@ const SearchBar = ({closeModal}) => {
               width: "100%",
               color: "white",
             }}
-            placeholder="Şehir ara"
+            placeholder="Konum ara"
             onChange={(e) => search(e.target.value)}
           />
           {isProgses && <CircularProgress size={40} sx={{ color: "white" }} />}
@@ -83,29 +84,32 @@ const SearchBar = ({closeModal}) => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "gray",
+            backgroundColor: "none",
             borderRadius: ".5rem",
             color: "white",
-            gap: ".1rem",
-            // background: "none",
+            gap: ".2rem",
             position: "absolute",
-            top: "100%",
+            top: "120%",
             left: 0,
+            zIndex: 223323,
           }}
         >
           {citys.map((item, index) => {
             return (
-              <Button
+              <Box
                 key={index}
                 sx={{
                   width: "100%",
-                  backgroundColor: "white",
+                  backgroundColor: "#557",
                   border: "none",
                   color: "black",
-                  padding: "1rem",
+                  padding: "1rem 1.5rem",
+                  cursor: "pointer",
                   borderRadius:
                     index === 0
-                      ? "1rem 1rem 0 0"
+                      ? citys.length === 1
+                        ? "1rem"
+                        : "1rem 1rem 0 0"
                       : index === citys.length - 1
                       ? "0 0 1rem 1rem"
                       : "0",
@@ -113,7 +117,7 @@ const SearchBar = ({closeModal}) => {
                 onClick={() => handleCity(item)}
               >
                 {item.name}
-              </Button>
+              </Box>
             );
           })}
         </Box>
@@ -122,6 +126,6 @@ const SearchBar = ({closeModal}) => {
   );
 };
 export default SearchBar;
-SearchBar.propTypes={
-  closeModal:PropTypes.func.isRequired
-}
+SearchBar.propTypes = {
+  closeModal: PropTypes.func.isRequired,
+};

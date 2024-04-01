@@ -1,42 +1,61 @@
 import { Outlet } from "react-router-dom";
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, CircularProgress, useMediaQuery } from "@mui/material";
 import styled from "@emotion/styled";
 import { sessionService } from "redux-react-session";
 // import { useTheme } from "@mui/material/styles";
 
 import Sidebar from "../components/Sidebar";
-import MobileNavigate from "../components/menu/MobileNavigate";
-import RightMenu from "../components/menu/RightMenu";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { fetchWeatherData } from "../redux/slices/CitySlice";
+import axios from "axios";
 const Layout = () => {
-  //rakamlardan random bir id değeri oluşturur
-  const randomId = async () => {
-    return Math.random().toString(36);
-  };
-  const loggined = async () => {
-    await sessionService.saveSession({
-      userId: await randomId() + "_" + Date.now(),
-    });
-    await sessionService.saveUser({userId:"1"});
-  };
-  const [location, setLocation] = useState(null)
+  const dispatch = useDispatch();
+  const [location, setLocation] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    loggined();
+    // Oturum işlemleri
+    const initializeSession = async () => {
+      const sessionId = Math.random().toString(36) + "_" + Date.now();
+      await sessionService.saveSession({ sessionId });
+      await sessionService.saveUser({ userId: "1" });
+    };
+    initializeSession();
+
+    // Kullanıcının konumunu alma
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude } = position.coords;
-        setLocation({
-          lat: latitude,
-          lng: longitude,
-        });
-        console.log(location); // Bu satır, konum henüz ayarlanmadan çalıştığı için muhtemelen önceki durumu veya null log'layacaktır.
+        setLocation({ lat: latitude, lon: longitude });
       },
       (error) => {
         console.error("Konum alınamadı:", error);
+        setLoading(false); // Konum alınamazsa yükleme ekranını kapat
       }
     );
-  },[]);
-  // const theme = useTheme();
+  }, []);
+
+  useEffect(() => {
+    const getCityNameAndFetchWeather = async () => {
+      if (location && location.lat && location.lon) {
+        try {
+          const response = await axios(
+            `http://api.openweathermap.org/geo/1.0/reverse?lat=${location.lat}&lon=${location.lon}&limit=1&appid=3a624872bbe7babf701dee83da65a57c`
+          );
+          const cityName = response.data[0].name;
+          dispatch(fetchWeatherData(cityName));
+        } catch (error) {
+          console.error("Şehir adı alınamadı:", error);
+        } finally {
+          setLoading(false); // Veri çekme işlemi tamamlandıktan sonra yükleme ekranını kapat
+        }
+      }
+    };
+
+    getCityNameAndFetchWeather();
+  }, [location, dispatch]);
+
   const isPhone = useMediaQuery("(max-width: 600px)");
   const isTablet = useMediaQuery("(min-width: 600px) and (max-width: 1234px)");
 
@@ -47,8 +66,8 @@ const Layout = () => {
     alignItems: "center",
     justifyContent: "center",
     minHeight: "100vh",
-    backgroundColor: "black",
     position: "relative",
+    backgroundColor:"rgba(3, 4, 12, 0.894)"
   });
 
   const Content = styled(Box)({
@@ -56,31 +75,32 @@ const Layout = () => {
     flexDirection: "column",
     width: isPhone ? "100%" : isTablet ? "80%" : "50%",
     minHeight: "100vh",
-    // border: "1px solid grey",
   });
-
+ 
   return (
     <Container>
+      {loading && (
+        <Box  sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+          width: "100vw",
+          background: " rgba(0, 0, 0, 0.372)",
+          position: "absolute",
+          zIndex: 100,
+        }}>
+          <CircularProgress />
+        </Box>
+      )}
       {!isPhone && !isTablet && <Sidebar />}
       <Content>
         <Outlet />
       </Content>
-      {(isPhone || isTablet) && <MobileNavigate />}
-
-      {!isPhone && !isTablet && (
-        <Box
-          sx={{
-            position: "fixed",
-            top: 10,
-            right: 10,
-            zIndex: 0.5,
-          }}
-        >
-          <RightMenu />
-        </Box>
-      )}
+      
     </Container>
   );
 };
+
 
 export default Layout;

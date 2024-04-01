@@ -1,12 +1,10 @@
-import * as React from "react";
+
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardActions from "@mui/material/CardActions";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PropTypes from "prop-types";
 
 const ExpandMore = styled((props) => {
@@ -21,36 +19,26 @@ const ExpandMore = styled((props) => {
 }));
 
 const CityCard = ({ city }) => {
-  const [expanded, setExpanded] = React.useState(false);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
+  
   return (
-    <Card sx={{ width: "100%", backgroundColor: "gray" }}>
+    <Card sx={{ width: "100%", backgroundColor: "rgba(27, 29, 42, 0.669)" }}>
       <CardHeader
         action={
-          <IconButton aria-label="settings">
-            <Typography>13C</Typography>
-          </IconButton>
+            <Typography fontSize={30}>{Math.floor(Number(city?.main.temp))}°</Typography>
         }
-        title={city.name}
-        subheader="13:04"
+        title={city?.name}
       />
 
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
+        <Typography fontSize={20}>{city?.weather[0].description}</Typography>
 
         <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
         >
-          {city.weather[0].description}
+          <Typography>
+
+          min:{Math.floor(Number(city?.main.temp_min))} max:{ Math.floor(Number(city?.main.temp_max))}
+          </Typography>
         </ExpandMore>
       </CardActions>
     </Card>

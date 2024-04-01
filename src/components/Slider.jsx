@@ -8,13 +8,16 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import SwipeableViews from "react-swipeable-views";
 import CityWeatherDetails from "./WeatherDetails/CityWeatherDetails";
 import { useSelector } from "react-redux";
+import { useMediaQuery } from "@mui/material";
+import CitysListModal from "../modals/CitysListModal";
 
 function Slider() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
 
-  const citys = useSelector((state) => state.citys);
-  const maxSteps = citys?.length;
+  const weatherData = useSelector(state => state.citys.cities);
+
+  const maxSteps = weatherData?.length;
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => (prevActiveStep + 1) % maxSteps);
@@ -30,14 +33,22 @@ function Slider() {
     setActiveStep(step);
   };
 
+  const isPhone = useMediaQuery("(max-width: 600px)");
+  const isTablet = useMediaQuery("(min-width: 600px) and (max-width: 1234px)");
   return (
     <Box sx={{ width: "100%", maxWidth: 700, flexGrow: 1 }}>
       <MobileStepper
         sx={{
           height: "3rem",
-          background: "#3333",
+          // background: "#3333",
           borderRadius: "1rem",
           padding: "0 1rem",
+          background:(isPhone||isTablet)?"black":"#3333",
+          position:(isPhone||isTablet)?"fixed":"static",
+          bottom:0,
+          left:0,
+          width:"100%",
+          zIndex: 1000,
           "& .MuiMobileStepper-dot": {
             backgroundColor: "gray",
           },
@@ -50,7 +61,7 @@ function Slider() {
         position="static"
         activeStep={activeStep}
         nextButton={
-          <Button size="small" onClick={handleNext} sx={{ color: "white" }}>
+          (isPhone||isTablet)? <CitysListModal/>: <Button size="small" onClick={handleNext} sx={{ color: "white" }}>
             Next
             {theme.direction === "rtl" ? (
               <KeyboardArrowLeft />
@@ -95,7 +106,7 @@ function Slider() {
           </div>
         ))} */}
 
-        {citys.map((city, index) => (
+        {weatherData.map((city, index) => (
           <CityWeatherDetails city={city} key={index} />
         ))}
       </SwipeableViews>

@@ -4,7 +4,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import LineAxisIcon from "@mui/icons-material/LineAxis";
 import FloodIcon from "@mui/icons-material/Flood";
 import styled from "@emotion/styled";
-
+import PropTypes from "prop-types";
 const Typography = styled(styledTypography)({
   color: "white",
   fontSize:"1.5rem"
@@ -28,7 +28,7 @@ const TexIcon = styled(Box)({
 
 });
 
-const Details = () => {
+const Details = ({detail}) => {
   return (
     <Box
       sx={{
@@ -46,31 +46,34 @@ const Details = () => {
           <Battery20Icon />
           <Typography>Sıcaklık</Typography>
         </TexIcon>
-        <Typography>28°C</Typography>
+        <Typography>{detail.temp}°C</Typography>
       </Item>
       <Item>
         <TexIcon>
           <LightModeIcon />
-          <Typography>Yağış ihtimali</Typography>
+          <Typography>Görüş mesafesi</Typography>
         </TexIcon>
-        <Typography>20%</Typography>
+        <Typography>{detail.visibility}%</Typography>
       </Item>
       <Item>
         <TexIcon>
           <LineAxisIcon />
           <Typography>Rüzgar hızı</Typography>
         </TexIcon>
-        <Typography>10 Km/s</Typography>
+        <Typography>{detail.windSpeed} Km/s</Typography>
       </Item>
       <Item>
         <TexIcon>
         <FloodIcon />
         <Typography>Nem oranı</Typography>
         </TexIcon>
-        <Typography>40%</Typography>
+        <Typography>{detail.humidity}%</Typography>
       </Item>
     </Box>
   );
 };
 
 export default Details;
+Details.propTypes={
+  detail:PropTypes.object,
+}

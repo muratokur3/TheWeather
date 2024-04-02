@@ -1,13 +1,13 @@
 import { Outlet } from "react-router-dom";
 import { Box, CircularProgress, useMediaQuery } from "@mui/material";
 import styled from "@emotion/styled";
-import { sessionService } from "redux-react-session";
 // import { useTheme } from "@mui/material/styles";
 
 import Sidebar from "../components/Sidebar";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchWeatherData } from "../redux/slices/CitySlice";
+import background from "../assets/Background/Background.svg";
 import axios from "axios";
 const Layout = () => {
   const dispatch = useDispatch();
@@ -15,14 +15,6 @@ const Layout = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Oturum işlemleri
-    const initializeSession = async () => {
-      const sessionId = Math.random().toString(36) + "_" + Date.now();
-      await sessionService.saveSession({ sessionId });
-      await sessionService.saveUser({ userId: "1" });
-    };
-    initializeSession();
-
     // Kullanıcının konumunu alma
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -67,29 +59,37 @@ const Layout = () => {
     justifyContent: "center",
     minHeight: "100vh",
     position: "relative",
-    backgroundColor:"rgba(3, 4, 12, 0.894)"
+    background: "#1a1a1c",
+    overflow:"hidden"
   });
 
   const Content = styled(Box)({
     display: "flex",
     flexDirection: "column",
+    alignItems:"center",
     width: isPhone ? "100%" : isTablet ? "80%" : "50%",
     minHeight: "100vh",
+    backgroundImage:`url(${background})`,
+    backgroundRepeat:"no-repeat",
+    backgroundSize:"cover",
+    backgroundColor: "none",
   });
- 
+
   return (
     <Container>
       {loading && (
-        <Box  sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
-          width: "100vw",
-          background: " rgba(0, 0, 0, 0.372)",
-          position: "absolute",
-          zIndex: 100,
-        }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+            width: "100vw",
+            background: " rgba(0, 0, 0, 0.372)",
+            position: "absolute",
+            zIndex: 100,
+          }}
+        >
           <CircularProgress />
         </Box>
       )}
@@ -97,10 +97,8 @@ const Layout = () => {
       <Content>
         <Outlet />
       </Content>
-      
     </Container>
   );
 };
-
 
 export default Layout;

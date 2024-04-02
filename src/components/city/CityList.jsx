@@ -3,8 +3,7 @@ import CityCard from "./CityCard";
 import { useSelector } from "react-redux";
 
 const CityList = () => {
-  const weatherData = useSelector(state => state.citys.cities);
-  console.log(weatherData);
+  const weatherData = useSelector(state => state?.weatherData?.cities);
   return (
     <Box
       sx={{

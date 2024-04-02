@@ -15,9 +15,9 @@ function Slider() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
 
-  const weatherData = useSelector(state => state.citys.cities);
+  const cities = useSelector((state) => state.weatherData.cities);
 
-  const maxSteps = weatherData?.length;
+  const maxSteps = cities?.length;
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => (prevActiveStep + 1) % maxSteps);
@@ -35,6 +35,15 @@ function Slider() {
 
   const isPhone = useMediaQuery("(max-width: 600px)");
   const isTablet = useMediaQuery("(min-width: 600px) and (max-width: 1234px)");
+
+  const activeCity = useSelector((state) => state.weatherData.activeCity);
+  const activeStepIndex = cities.findIndex((city) => city.name === activeCity);
+
+  React.useEffect(() => {
+    // Eğer aktif şehir değişirse, aktif adımı güncelleyin
+    setActiveStep(activeStepIndex >= 0 ? activeStepIndex : 0);
+  }, [activeCity, activeStepIndex]);
+
   return (
     <Box sx={{ width: "100%", maxWidth: 700, flexGrow: 1 }}>
       <MobileStepper
@@ -43,11 +52,11 @@ function Slider() {
           // background: "#3333",
           borderRadius: "1rem",
           padding: "0 1rem",
-          background:(isPhone||isTablet)?"black":"#3333",
-          position:(isPhone||isTablet)?"fixed":"static",
-          bottom:0,
-          left:0,
-          width:"100%",
+          background: isPhone || isTablet ? "black" : "#3333",
+          position: isPhone || isTablet ? "fixed" : "static",
+          bottom: 0,
+          left: 0,
+          width: "100%",
           zIndex: 1000,
           "& .MuiMobileStepper-dot": {
             backgroundColor: "gray",
@@ -61,14 +70,18 @@ function Slider() {
         position="static"
         activeStep={activeStep}
         nextButton={
-          (isPhone||isTablet)? <CitysListModal/>: <Button size="small" onClick={handleNext} sx={{ color: "white" }}>
-            Next
-            {theme.direction === "rtl" ? (
-              <KeyboardArrowLeft />
-            ) : (
-              <KeyboardArrowRight />
-            )}
-          </Button>
+          isPhone || isTablet ? (
+            <CitysListModal />
+          ) : (
+            <Button size="small" onClick={handleNext} sx={{ color: "white" }}>
+              Next
+              {theme.direction === "rtl" ? (
+                <KeyboardArrowLeft />
+              ) : (
+                <KeyboardArrowRight />
+              )}
+            </Button>
+          )
         }
         backButton={
           <Button sx={{ color: "white" }} size="small" onClick={handleBack}>
@@ -87,26 +100,7 @@ function Slider() {
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {/* {images.map((step, index) => (
-          <div key={step.label}>
-            {Math.abs(activeStep - index) <= 2 ? (
-              <Box
-                component="img"
-                sx={{
-                  height: 255,
-                  display: "block",
-                  maxWidth: 400,
-                  overflow: "hidden",
-                  width: "100%",
-                }}
-                src={step.imgPath}
-                alt={step.label}
-              />
-            ) : null}
-          </div>
-        ))} */}
-
-        {weatherData.map((city, index) => (
+        {cities.map((city, index) => (
           <CityWeatherDetails city={city} key={index} />
         ))}
       </SwipeableViews>

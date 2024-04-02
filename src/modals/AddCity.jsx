@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import SearchBar from "../components/SearchBar";
-import { Typography } from "@mui/material";
-
+import { Avatar, Typography } from "@mui/material";
+import logo from "../../public/simbolo.svg";
 const style = {
   width: "100%",
   height: "100%",
@@ -14,7 +14,7 @@ const style = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  gap: "20%",
+  gap: "10%",
   transform: "translate(-50%, -50%)",
   bgcolor: "rgba(0, 0, 0, 0.753)",
   // bgcolor: "red",
@@ -32,12 +32,19 @@ const AddCity = () => {
       <Button variant="outlined" size="large" onClick={handleOpen}>
         Şehir Ekle
       </Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-      >
+      <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <Box margin={"5% 0"}>TheWeather</Box>
+          <Box
+            margin={"20% 0"}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <Avatar src={logo} />
+            <Typography color="white">TheWeather </Typography>{" "}
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -51,11 +58,11 @@ const AddCity = () => {
               <Typography variant="h5" color={"blueviolet"}>
                 TypeWeather
               </Typography>
-              <Typography variant="h5">Hoş Geldiniz</Typography>
+              <Typography variant="h5" color="white">Hoş Geldiniz</Typography>
             </Box>
 
-            <Typography variant="body1">
-            Hava tahminini görmek için bir konum seçin
+            <Typography fontSize={12} color="white">
+              Hava tahminini görmek için bir konum seçin
             </Typography>
 
             <SearchBar closeModal={handleClose} />

@@ -1,13 +1,13 @@
-import { Box, Typography as styledTypography } from "@mui/material";
-import Battery20Icon from "@mui/icons-material/Battery20";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import LineAxisIcon from "@mui/icons-material/LineAxis";
-import FloodIcon from "@mui/icons-material/Flood";
+import { Avatar, Box, Typography as styledTypography } from "@mui/material";
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
+import humidity from "../../assets/Icons/air_humidity.svg";
+import uvIndex from "../../assets/Icons/uv_index.svg";
+import wind from "../../assets/Icons/wind_speed.svg";
+import thermalSensation from "../../assets/Icons/thermal_sensation.svg";
 const Typography = styled(styledTypography)({
   color: "white",
-  fontSize:"1.5rem"
+  fontSize: "1.5rem",
 });
 const Item = styled(Box)({
   width: "100%",
@@ -16,19 +16,18 @@ const Item = styled(Box)({
   justifyContent: "space-between",
   gap: "1rem",
   borderBottom: "1px solid rgba(71, 69, 69, 0.259)",
-  padding:"1rem",
-  alignItems:"center",
+  padding: "1rem",
+  alignItems: "center",
 });
 
 const TexIcon = styled(Box)({
-  width:"auto",
- display:"flex",
- flexDirection:"row",
-  gap:"2rem",
-
+  width: "auto",
+  display: "flex",
+  flexDirection: "row",
+  gap: "2rem",
 });
 
-const Details = ({detail}) => {
+const Details = ({ detail }) => {
   return (
     <Box
       sx={{
@@ -37,43 +36,43 @@ const Details = ({detail}) => {
         flexDirection: "column",
         gap: "1rem",
         backgroundColor: "#3333",
-        borderRadius:"2rem",
-        padding:"2rem",
+        borderRadius: "2rem",
+        padding: "2rem",
       }}
     >
       <Item>
         <TexIcon>
-          <Battery20Icon />
+          <Avatar src={thermalSensation} />
           <Typography>Sıcaklık</Typography>
         </TexIcon>
         <Typography>{detail.temp}°C</Typography>
       </Item>
       <Item>
         <TexIcon>
-          <LightModeIcon />
-          <Typography>Görüş mesafesi</Typography>
-        </TexIcon>
-        <Typography>{detail.visibility}%</Typography>
-      </Item>
-      <Item>
-        <TexIcon>
-          <LineAxisIcon />
+          <Avatar src={wind} />
           <Typography>Rüzgar hızı</Typography>
         </TexIcon>
         <Typography>{detail.windSpeed} Km/s</Typography>
       </Item>
       <Item>
         <TexIcon>
-        <FloodIcon />
-        <Typography>Nem oranı</Typography>
+          <Avatar src={humidity} />
+          <Typography>Nem oranı</Typography>
         </TexIcon>
         <Typography>{detail.humidity}%</Typography>
+      </Item>
+      <Item>
+        <TexIcon>
+          <Avatar src={uvIndex} />
+          <Typography>Görüş mesafesi</Typography>
+        </TexIcon>
+        <Typography>{detail.visibility}%</Typography>
       </Item>
     </Box>
   );
 };
 
 export default Details;
-Details.propTypes={
-  detail:PropTypes.object,
-}
+Details.propTypes = {
+  detail: PropTypes.object,
+};

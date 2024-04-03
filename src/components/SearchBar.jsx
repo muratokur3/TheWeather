@@ -1,6 +1,6 @@
-import { Box, Button, InputBase } from "@mui/material";
-
+import { Box,Typography, InputBase } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import {getName} from "country-list";
 import axios from "axios";
 // import axios from "../../axiosConfig";
 import PropTypes from "prop-types";
@@ -8,15 +8,16 @@ import { useState } from "react";
 // import { setCity } from "../redux/slices/CitySlice";
 import { useDispatch } from "react-redux";
 import { fetchWeatherData } from "../redux/slices/CitySlice";
-
+import { useTheme } from "@mui/material/styles";
 const SearchBar = ({ closeModal }) => {
+  const theme= useTheme();
   const dispatch = useDispatch();
   const [isProgses, setIsProgses] = useState(false);
   const [citys, setCitys] = useState([]);
 
   const search = async (text) => {
     const response = await axios(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${text},tr&limit=4&appid=3a624872bbe7babf701dee83da65a57c`
+      `http://api.openweathermap.org/geo/1.0/direct?q=${text}&limit=4&appid=3a624872bbe7babf701dee83da65a57c`
     );
     if (response.status === 200) {
       setCitys(response.data);
@@ -45,6 +46,7 @@ const SearchBar = ({ closeModal }) => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
+        background:"#1E1E29",
         position: "relative",
       }}
     >
@@ -60,7 +62,6 @@ const SearchBar = ({ closeModal }) => {
             padding: ".5rem 1.5rem",
             display: "flex",
             flexDirection: "row",
-            backgroundColor: "#335",
             borderRadius: ".7rem",
             alignItems: "center",
           }}
@@ -68,12 +69,13 @@ const SearchBar = ({ closeModal }) => {
           <InputBase
             sx={{
               width: "100%",
-              color: "white",
+              color: "#BFBFD4",
+              fontSize:"1.2rem",
             }}
             placeholder="Konum ara"
             onChange={(e) => search(e.target.value)}
           />
-          {isProgses && <CircularProgress size={40} sx={{ color: "white" }} />}
+          {isProgses && <CircularProgress size={"2rem"} sx={{ color: "white" }} />}
         </Box>
       </Box>
       {citys.length > 0 && (
@@ -86,8 +88,9 @@ const SearchBar = ({ closeModal }) => {
             alignItems: "center",
             backgroundColor: "none",
             borderRadius: ".5rem",
-            color: "white",
+            color: "#BFBFD4",
             gap: ".2rem",
+            fontSize:"1.2rem",
             position: "absolute",
             top: "120%",
             left: 0,
@@ -96,28 +99,30 @@ const SearchBar = ({ closeModal }) => {
         >
           {citys.map((item, index) => {
             return (
-              <Box
+              <Typography
                 key={index}
                 sx={{
                   width: "100%",
-                  backgroundColor: "#557",
+                  backgroundColor: "#3B3B54",
                   border: "none",
-                  color: "black",
                   padding: "1rem 1.5rem",
                   cursor: "pointer",
                   borderRadius:
                     index === 0
                       ? citys.length === 1
-                        ? "1rem"
-                        : "1rem 1rem 0 0"
+                        ? ".5rem"
+                        : ".5rem .5rem 0 0"
                       : index === citys.length - 1
-                      ? "0 0 1rem 1rem"
+                      ? "0 0 .5rem .5rem"
                       : "0",
+                  "&:hover": {
+                    backgroundColor: "#4B4B64",
+                  },
                 }}
                 onClick={() => handleCity(item)}
               >
-                {item.name}
-              </Box>
+                {item.name} - {getName(item.country)}
+              </Typography>
             );
           })}
         </Box>

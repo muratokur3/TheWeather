@@ -1,14 +1,17 @@
-import { Avatar, Box, Typography as styledTypography } from "@mui/material";
+import { Avatar, Box, Typography as styledTypography, useMediaQuery } from "@mui/material";
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 import { Background } from "../../utils/getBackground";
 import { getIcon } from "../../utils/getIcons";
+import {getName} from "country-list";
 
 const Typography = styled(styledTypography)({
   color: "white",
 });
 
 const Header = ({ detail }) => {
+  const isPhone = useMediaQuery("(max-width: 600px)");
+
   const formatDate = (timestamp) => {
     const date = new Date(timestamp * 1000);
     return date.toLocaleDateString("tr-TR");
@@ -20,7 +23,8 @@ const Header = ({ detail }) => {
         flexDirection: "row",
         justifyContent: "space-between",
         width: "100%",
-        height: "500px",
+        height: "30vh",
+        minHeight:"200px",
         padding: "1rem",
         position: "relative",
           backgroundImage: `url(${Background(detail.icon)})`,
@@ -38,16 +42,16 @@ const Header = ({ detail }) => {
         }}
       >
         <Box>
-          <Typography variant="h5">{detail.name}</Typography>
+          <Typography variant={isPhone?"h6":"h4"}>{detail.name} - {getName(detail?.country)}</Typography>
           <Typography variant="body2">{formatDate(detail.date)}</Typography>
         </Box>
 
         <Box>
-          <Typography variant="h2">{detail.temp}</Typography>
-          <Typography variant="body2">
-            {detail.minTemp}°C / {detail.maxTemp}
+          <Typography variant="h3">{detail.temp}°C</Typography>
+          <Typography variant={isPhone?"body2":"body1"}>
+            {detail.minTemp}°C / {detail.maxTemp}°C
           </Typography>
-          <Typography variant="body3">{detail.description}</Typography>
+          <Typography variant="body1">{detail.description}</Typography>
         </Box>
       </Box>
 

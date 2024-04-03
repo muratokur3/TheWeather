@@ -1,15 +1,14 @@
 import { styled } from "@mui/material/styles";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardActions from "@mui/material/CardActions";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import RemoveIcon from "@mui/icons-material/Remove";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
+import { Avatar, Typography as StyleTypography } from "@mui/material";
 import PropTypes from "prop-types";
 import { setActiveCity } from "../../redux/slices/CitySlice";
 import { useDispatch } from "react-redux";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { removeCity } from "../../redux/slices/CitySlice";
+import { Background } from "../../utils/getBackground";
+import { getIcon } from "../../utils/getIcons";
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -21,50 +20,64 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const CityCard = ({ city }) => {
+const CityCard = ({ city,onClose }) => {
   const dispatch = useDispatch();
 
+  const Typography = styled(StyleTypography)({
+    color: "#FAFAFA",
+  });
+
+  const handleClickCity = (name) => {
+    onClose();
+    dispatch(setActiveCity(name));
+  };
   return (
-    <Card
+    <Box
       sx={{
         width: "100%",
-        backgroundColor: " rgba(80, 81, 84, 0.669)",
+        height: "auto",
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "1rem",
         borderRadius: "1rem",
+        backgroundSize: "cover",
+        border: "none",
+        backgroundImage: `url(${Background(city?.weather[0].icon)})`,
       }}
-      onClick={() => dispatch(setActiveCity(city?.name))}
+      onClick={() => handleClickCity(city.name)}
     >
-      <CardHeader
-        action={
-          <Typography fontSize={30}>
-            {Math.floor(Number(city?.main.temp))}°
-          </Typography>
-        }
-        title={
-          <Box>
-            <Typography fontSize={25}>{city?.name}</Typography>
-            <Typography fontSize={15}>
-              min:{Math.floor(Number(city?.main.temp_min))} max:
-              {Math.floor(Number(city?.main.temp_max))}
-            </Typography>
-          </Box>
-        }
-      />
+      <Box>
+        <Typography fontSize={25}>{city?.name}</Typography>
 
-      <CardActions disableSpacing>
-        <Typography>
-          {city?.weather[0].description}
+        <Typography>Hava {city?.weather[0].description}</Typography>
+      </Box>
+
+      <Avatar src={getIcon(city.weather[0].icon)} />
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "end",
+        }}
+      >
+        <Typography fontSize={30}>
+          {Math.floor(Number(city?.main.temp))}°C
         </Typography>
-        <ExpandMore>
-          <Button onClick={() => dispatch(removeCity(city?.name))}>
-            <DeleteForeverIcon sx={{ color: "orange" }} />
-          </Button>
-        </ExpandMore>
-      </CardActions>
-    </Card>
+        <RemoveIcon
+          color="primary"
+          fontSize="large"
+          cursor="pointer"
+          onClick={() => dispatch(removeCity(city?.name))}
+        />
+      </Box>
+    </Box>
   );
 };
 
 export default CityCard;
 CityCard.propTypes = {
   city: PropTypes.object.isRequired,
+  onClose: PropTypes.func,
 };

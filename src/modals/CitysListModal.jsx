@@ -5,26 +5,23 @@ import Modal from "@mui/material/Modal";
 import AddCity from "./AddCity";
 import CityList from "../components/city/CityList";
 import ListIcon from "@mui/icons-material/List";
+import { useMediaQuery } from "@mui/material";
 
 const CitysListModal = () => {
+  const isTablet = useMediaQuery("(min-width: 600px) and (max-width: 1234px)");
 
   const style = {
-    width: "100%",
-    height:"100%",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
+    width: isTablet?"70%":"100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "20%",
-    transform: "translate(-50%, -50%)",
-    bgcolor: "rgba(0, 0, 0, 0.753)",
-    // bgcolor: "red",
+    gap: "5%",
+    // bgcolor: "rgba(0, 0, 0, 0.753)",
+    bgcolor: "#22222F",
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
-    padding: "10vw 20vw",
+    overflow:"auto",
   };
   
   const [open, setOpen] = React.useState(false);
@@ -35,10 +32,14 @@ const CitysListModal = () => {
       <Button variant="text" size="large" onClick={handleOpen}>
         <ListIcon />
       </Button>
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={handleClose} sx={{
+        background:"#13131A",
+        display: "flex",
+    justifyContent: "center",
+      }}>
         <Box sx={style}>
           <AddCity />
-          <CityList />
+          <CityList onClose={handleClose}/>
         </Box>
       </Modal>
     </Box>

@@ -5,23 +5,20 @@ import Modal from "@mui/material/Modal";
 import SearchBar from "../components/SearchBar";
 import { Avatar, Typography } from "@mui/material";
 import logo from "../../public/simbolo.svg";
+import background from "../assets/Background/Background.svg";
 const style = {
-  width: "100%",
-  height: "100%",
-  position: "absolute",
-  top: "50%",
-  left: "50%",
+  width:"100%",
+  height:"50%",
   display: "flex",
   flexDirection: "column",
+  justifyContent:"space-between",
   alignItems: "center",
-  gap: "10%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "rgba(0, 0, 0, 0.753)",
-  // bgcolor: "red",
-  border: "2px solid #000",
-  boxShadow: 24,
+  gap: "20%",
+  bgcolor: "none",
+  border: "none",
   p: 4,
 };
+
 
 const AddCity = () => {
   const [open, setOpen] = React.useState(false);
@@ -29,13 +26,18 @@ const AddCity = () => {
   const handleClose = () => setOpen(false);
   return (
     <Box>
-      <Button variant="outlined" size="large" onClick={handleOpen}>
-        Şehir Ekle
+      <Button variant="outlined" size="large" onClick={handleOpen}
+          
+     >
+      Yeni Şehir Ekle
       </Button>
-      <Modal open={open} onClose={handleClose}>
+    
+      <Modal open={open} onClose={handleClose} fullWid sx={{
+            backgroundImage:`url(${background})`,
+      }}>
         <Box sx={style}>
           <Box
-            margin={"20% 0"}
+            // margin={"10vw 0"}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -43,7 +45,7 @@ const AddCity = () => {
             }}
           >
             <Avatar src={logo} />
-            <Typography color="white">TheWeather </Typography>{" "}
+            <Typography variant="h3" color="#BFBFD4">TheWeather </Typography>{" "}
           </Box>
           <Box
             sx={{
@@ -55,13 +57,13 @@ const AddCity = () => {
             }}
           >
             <Box display={"flex"} gap={2}>
-              <Typography variant="h5" color={"blueviolet"}>
+              <Typography variant="h4" color={"#8FB2F5"}>
                 TypeWeather
               </Typography>
-              <Typography variant="h5" color="white">Hoş Geldiniz</Typography>
+              <Typography variant="h4" color="#BFBFD4">Hoş Geldiniz</Typography>
             </Box>
 
-            <Typography fontSize={12} color="white">
+            <Typography fontSize={"1rem"} color="#7F7F98">
               Hava tahminini görmek için bir konum seçin
             </Typography>
 

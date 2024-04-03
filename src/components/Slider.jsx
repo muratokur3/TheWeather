@@ -49,15 +49,12 @@ function Slider() {
       <MobileStepper
         sx={{
           height: "3rem",
-          // background: "#3333",
-          borderRadius: "1rem",
-          padding: "0 1rem",
-          background: isPhone || isTablet ? "black" : "#3333",
+          background: isPhone || isTablet ? "black" : "none",
           position: isPhone || isTablet ? "fixed" : "static",
           bottom: 0,
           left: 0,
           width: "100%",
-          zIndex: 1000,
+          zIndex: 1,
           "& .MuiMobileStepper-dot": {
             backgroundColor: "gray",
           },
@@ -74,7 +71,7 @@ function Slider() {
             <CitysListModal />
           ) : (
             <Button size="small" onClick={handleNext} sx={{ color: "white" }}>
-              Next
+              
               {theme.direction === "rtl" ? (
                 <KeyboardArrowLeft />
               ) : (
@@ -83,15 +80,15 @@ function Slider() {
             </Button>
           )
         }
-        backButton={
-          <Button sx={{ color: "white" }} size="small" onClick={handleBack}>
-            Back
+        backButton={ isPhone || isTablet ?".":
+        (  <Button sx={{ color: "white" }} size="small" onClick={handleBack}>
+            
             {theme.direction === "rtl" ? (
               <KeyboardArrowRight />
             ) : (
               <KeyboardArrowLeft />
             )}
-          </Button>
+          </Button>)
         }
       />
       <SwipeableViews

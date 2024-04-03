@@ -10,7 +10,6 @@ export const fetchWeatherData = createAsyncThunk(
       const weatherResponse = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&lang=tr&units=metric&appid=3a624872bbe7babf701dee83da65a57c`
       );
-      console.log(weatherResponse);
       const forecastResponse = await axios.get(
         `https://api.openweathermap.org/data/2.5/forecast`,
         {
@@ -98,8 +97,11 @@ export const citySlice = createSlice({
       state.activeCity = action.payload;
     },
     removeCity: (state, action) => {
+      console.log(action.payload);
       state.cities = state.cities.filter(
-        (city, index) => city.name !== action.payload || index === 0
+        (city, index) => {
+          console.log(city.name, action.payload);
+          return city.name !== action.payload || index === 0}
       );
     },
   },

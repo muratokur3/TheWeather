@@ -15,6 +15,15 @@ const Layout = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const intervalId = setInterval(() => {
+      // Hava durumu verisini güncelle
+      dispatch(fetchWeatherData());
+    }, 600000); // 10 dakikada bir güncelle
+  
+    return () => clearInterval(intervalId); // Component unmount olduğunda intervali temizle
+  }, [dispatch]);
+
+  useEffect(() => {
     // Kullanıcının konumunu alma
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -53,6 +62,7 @@ const Layout = () => {
 
   const Container = styled(Box)({
     width: "100%",
+    maxWidth: "100vw",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -60,19 +70,20 @@ const Layout = () => {
     minHeight: "100vh",
     position: "relative",
     background: "#1a1a1c",
-    overflow:"hidden"
+    backgroundImage:`url(${background})`,
+    overflow:"hidden",
+    overflowX: "hidden", // Yatay scroll bar'ı gizler
   });
 
   const Content = styled(Box)({
     display: "flex",
     flexDirection: "column",
     alignItems:"center",
-    width: isPhone ? "100%" : isTablet ? "80%" : "50%",
+    width: isPhone ? "95%" : isTablet ? "80%" : "50%",
     minHeight: "100vh",
-    backgroundImage:`url(${background})`,
-    backgroundRepeat:"no-repeat",
-    backgroundSize:"cover",
     backgroundColor: "none",
+    padding:"1rem 0",
+    overflowX: "hidden", // Yatay scroll bar'ı gizler
   });
 
   return (

@@ -16,6 +16,7 @@ const CityWeatherDetails = ({city}) => {
     maxTemp: Math.floor(Number(currentWeather?.main.temp_max)),
     description: currentWeather?.weather[0].description,
     icon: currentWeather?.weather[0].icon,
+    country: currentWeather?.sys.country,
   };
   const detailDetail = {
     temp: Math.floor(Number(currentWeather?.main.temp)),
@@ -30,8 +31,7 @@ const CityWeatherDetails = ({city}) => {
         flexDirection: "column",
         alignItems: "center",
         overflow:"hidden",
-        minHeight: "100vh",
-        padding: "1rem",
+        minHeight: "100%",
         display: "flex",
         width: "100%",
         gap: "1rem",

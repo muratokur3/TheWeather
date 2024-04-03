@@ -2,7 +2,7 @@ import { Avatar, Box, Typography as styledTypography } from "@mui/material";
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 import humidity from "../../assets/Icons/air_humidity.svg";
-import uvIndex from "../../assets/Icons/uv_index.svg";
+import eye from "../../assets/Icons/eye.svg";
 import wind from "../../assets/Icons/wind_speed.svg";
 import thermalSensation from "../../assets/Icons/thermal_sensation.svg";
 const Typography = styled(styledTypography)({
@@ -16,7 +16,7 @@ const Item = styled(Box)({
   justifyContent: "space-between",
   gap: "1rem",
   borderBottom: "1px solid rgba(71, 69, 69, 0.259)",
-  padding: "1rem",
+  padding: ".6rem",
   alignItems: "center",
 });
 
@@ -37,7 +37,7 @@ const Details = ({ detail }) => {
         gap: "1rem",
         backgroundColor: "#3333",
         borderRadius: "2rem",
-        padding: "2rem",
+        padding: ".7rem",
       }}
     >
       <Item>
@@ -52,7 +52,7 @@ const Details = ({ detail }) => {
           <Avatar src={wind} />
           <Typography>Rüzgar hızı</Typography>
         </TexIcon>
-        <Typography>{detail.windSpeed} Km/s</Typography>
+        <Typography>{detail.windSpeed} km/s</Typography>
       </Item>
       <Item>
         <TexIcon>
@@ -63,7 +63,7 @@ const Details = ({ detail }) => {
       </Item>
       <Item>
         <TexIcon>
-          <Avatar src={uvIndex} />
+          <Avatar src={eye} />
           <Typography>Görüş mesafesi</Typography>
         </TexIcon>
         <Typography>{detail.visibility}%</Typography>

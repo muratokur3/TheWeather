@@ -16,7 +16,6 @@ const Layout = () => {
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(true);
   const weatherData = useSelector((state) => state.weatherData.cities);
-  console.log(weatherData);
   useEffect(() => {
     const intervalId = setInterval(() => {
       dispatch(fetchWeatherData());

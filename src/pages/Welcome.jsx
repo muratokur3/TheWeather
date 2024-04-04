@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import SearchCity from "../components/SearchCity";
-import { Avatar, Typography } from "@mui/material";
+import {Typography } from "@mui/material";
 import background from "../assets/Background/Background.svg";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";

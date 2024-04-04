@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import SearchCity from "../components/SearchCity";
-import { Avatar, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import background from "../assets/Background/Background.svg";
 const style = {
   width:"100%",

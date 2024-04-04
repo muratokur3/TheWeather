@@ -29,11 +29,9 @@ export const citySlice = createSlice({
     },
     // Aktif şehri ayarlamak için yeni bir reducer ekleme
     setActiveCity: (state, action) => {
-      console.log(action.payload);
       state.activeCity = action.payload;
     },
     removeCity: (state, action) => {
-      console.log(action.payload);
       state.cities = state.cities.filter(
         (city) => city.name !== action.payload
       );
@@ -41,6 +39,7 @@ export const citySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // eslint-disable-next-line no-unused-vars
       .addCase(fetchWeatherData.pending, (state, action) => {
         state.status = "loading";
       })

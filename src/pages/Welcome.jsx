@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import SearchCity from "../components/SearchCity";
 import { Avatar, Typography } from "@mui/material";
-import logo from "../../src/assets/marca.svg";
 import background from "../assets/Background/Background.svg";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -47,7 +46,7 @@ const Welcome = () => {
               gap: 1,
             }}
           >
-            <Avatar src={logo} />
+            {/* <Avatar src={logo} /> */}
             <Typography variant="h3" color="#BFBFD4">TheWeather </Typography>{" "}
           </Box>
 

@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import SearchCity from "../components/SearchCity";
 import { Avatar, Typography } from "@mui/material";
-import logo from "../../src/assets/marca.svg";
 import background from "../assets/Background/Background.svg";
 const style = {
   width:"100%",
@@ -45,7 +44,7 @@ const AddCity = () => {
               gap: 1,
             }}
           >
-            <Avatar src={logo} />
+            {/* <Avatar src={logo} /> */}
             <Typography variant="h3" color="#BFBFD4">TheWeather </Typography>{" "}
           </Box>
           <Box

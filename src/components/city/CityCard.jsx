@@ -20,7 +20,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const CityCard = ({ city,onClose }) => {
+const CityCard = ({ city, onClose }) => {
   const dispatch = useDispatch();
 
   const Typography = styled(StyleTypography)({
@@ -28,8 +28,8 @@ const CityCard = ({ city,onClose }) => {
   });
 
   const handleClickCity = (name) => {
-    onClose();
     dispatch(setActiveCity(name));
+    onClose();
   };
   return (
     <Box
@@ -46,9 +46,22 @@ const CityCard = ({ city,onClose }) => {
       }}
       onClick={() => handleClickCity(city.name)}
     >
-      <Box>
-        <Typography fontSize={25}>{city?.name}</Typography>
-
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+        }}
+      >
+        <Box>
+          <Typography fontSize={20}>{city?.name}</Typography>
+          <Typography fontSize={12}>
+            {new Date(city.dt * 1000).toLocaleTimeString("tr-TR", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </Typography>
+        </Box>
         <Typography>Hava {city?.weather[0].description}</Typography>
       </Box>
 

@@ -17,7 +17,7 @@ const CitysListModal = () => {
     alignItems: "center",
     gap: "5%",
     // bgcolor: "rgba(0, 0, 0, 0.753)",
-    bgcolor: "#22222F",
+    background:"#13131A",
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
@@ -30,10 +30,11 @@ const CitysListModal = () => {
   return (
     <Box>
       <Button variant="text" size="large" onClick={handleOpen}>
-        <ListIcon />
+        <ListIcon/>
       </Button>
       <Modal open={open} onClose={handleClose} sx={{
-        background:"#13131A",
+        backgroundColor:"#13131A",
+
         display: "flex",
     justifyContent: "center",
       }}>

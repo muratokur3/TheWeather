@@ -1,26 +1,28 @@
-import { Outlet } from "react-router-dom";
-import { Box, CircularProgress, useMediaQuery } from "@mui/material";
+import { Outlet, useNavigate } from "react-router-dom";
+import { Box, useMediaQuery } from "@mui/material";
 import styled from "@emotion/styled";
-// import { useTheme } from "@mui/material/styles";
 
 import Sidebar from "../components/Sidebar";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { fetchWeatherData } from "../redux/slices/CitySlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWeatherData } from "../redux/actions/Cities";
 import background from "../assets/Background/Background.svg";
 import axios from "axios";
+import Loading from "../components/Loading";
+import Welcome from "../pages/Welcome";
 const Layout = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const weatherData = useSelector((state) => state.weatherData.cities);
+  console.log(weatherData);
   useEffect(() => {
     const intervalId = setInterval(() => {
-      // Hava durumu verisini güncelle
       dispatch(fetchWeatherData());
-    }, 600000); // 10 dakikada bir güncelle
-  
-    return () => clearInterval(intervalId); // Component unmount olduğunda intervali temizle
+    }, 3600000 * 2); // 2 saat
+
+    return () => clearInterval(intervalId);
   }, [dispatch]);
 
   useEffect(() => {
@@ -49,11 +51,10 @@ const Layout = () => {
         } catch (error) {
           console.error("Şehir adı alınamadı:", error);
         } finally {
-          setLoading(false); // Veri çekme işlemi tamamlandıktan sonra yükleme ekranını kapat
+          setLoading(false);
         }
       }
     };
-
     getCityNameAndFetchWeather();
   }, [location, dispatch]);
 
@@ -70,40 +71,25 @@ const Layout = () => {
     minHeight: "100vh",
     position: "relative",
     background: "#1a1a1c",
-    backgroundImage:`url(${background})`,
-    overflow:"hidden",
-    overflowX: "hidden", // Yatay scroll bar'ı gizler
+    backgroundImage: `url(${background})`,
+    overflow: "hidden",
   });
 
   const Content = styled(Box)({
     display: "flex",
     flexDirection: "column",
-    alignItems:"center",
-    width: isPhone ? "95%" : isTablet ? "80%" : "50%",
+    alignItems: "center",
+    width: isPhone ? "100%" : isTablet ? "80%" : "50%",
     minHeight: "100vh",
     backgroundColor: "none",
-    padding:"1rem 0",
-    overflowX: "hidden", // Yatay scroll bar'ı gizler
+    padding: "1rem 0",
+    overflowX: "hidden",
   });
 
   return (
     <Container>
-      {loading && (
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100vh",
-            width: "100vw",
-            background: " rgba(0, 0, 0, 0.372)",
-            position: "absolute",
-            zIndex: 100,
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      )}
+      {loading && <Loading />}
+      {weatherData.length === 0 && <Welcome />}
       {!isPhone && !isTablet && <Sidebar />}
       <Content>
         <Outlet />

@@ -1,39 +1,35 @@
-import { Box,Typography, InputBase } from "@mui/material";
+import { Box, Typography, InputBase } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import {getName} from "country-list";
-import axios from "axios";
-// import axios from "../../axiosConfig";
+import { getName } from "country-list";
+import axios from "../../axiosConfig";
 import PropTypes from "prop-types";
 import { useState } from "react";
 // import { setCity } from "../redux/slices/CitySlice";
-import { useDispatch } from "react-redux";
-import { fetchWeatherData } from "../redux/slices/CitySlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWeatherData } from "../redux/actions/Cities";
 import { useTheme } from "@mui/material/styles";
 const SearchBar = ({ closeModal }) => {
-  const theme= useTheme();
+  const theme = useTheme();
   const dispatch = useDispatch();
-  const [isProgses, setIsProgses] = useState(false);
+  const stateStatus = useSelector((state) => state.weatherData.status);
+
   const [citys, setCitys] = useState([]);
 
   const search = async (text) => {
-    const response = await axios(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${text}&limit=4&appid=3a624872bbe7babf701dee83da65a57c`
-    );
+    const response = await axios(`geo/1.0/direct?q=${text}&limit=4`);
     if (response.status === 200) {
       setCitys(response.data);
     }
   };
   const handleCity = async (value) => {
     if (value.length !== 0) {
-      setIsProgses(true);
       try {
         dispatch(fetchWeatherData(value.name));
         setCitys([]);
       } catch (error) {
         console.error(error);
       } finally {
-        setIsProgses(false);
-        closeModal();
+         closeModal();
       }
     }
   };
@@ -46,7 +42,7 @@ const SearchBar = ({ closeModal }) => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        background:"#1E1E29",
+        background: "#1E1E29",
         position: "relative",
       }}
     >
@@ -70,12 +66,14 @@ const SearchBar = ({ closeModal }) => {
             sx={{
               width: "100%",
               color: "#BFBFD4",
-              fontSize:"1.2rem",
+              fontSize: "1.2rem",
             }}
             placeholder="Konum ara"
             onChange={(e) => search(e.target.value)}
           />
-          {isProgses && <CircularProgress size={"2rem"} sx={{ color: "white" }} />}
+          {stateStatus == "loading" && (
+            <CircularProgress size={"2rem"} sx={{ color: "white" }} />
+          )}
         </Box>
       </Box>
       {citys.length > 0 && (
@@ -90,7 +88,7 @@ const SearchBar = ({ closeModal }) => {
             borderRadius: ".5rem",
             color: "#BFBFD4",
             gap: ".2rem",
-            fontSize:"1.2rem",
+            fontSize: "1.2rem",
             position: "absolute",
             top: "120%",
             left: 0,

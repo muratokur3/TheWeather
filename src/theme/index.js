@@ -66,10 +66,9 @@ const theme = createTheme({
     },
     button: {
       fontSize: '0.75rem', // 12px
-      fontWeight: 700, // Regular & Bold
+      fontWeight: 700, 
       lineHeight: 1.4,
     },
-    // Diğer tipografi ayarları...
   },
 });
 

@@ -15,7 +15,7 @@ const Items = styled(Box)({
   gap: "1rem",
 });
 
-const FifeDay = ({forecast}) => {
+const Forecast = ({forecast}) => {
   return (
     <Box
     sx={{
@@ -41,7 +41,7 @@ const FifeDay = ({forecast}) => {
   );
 };
 
-export default FifeDay;
-FifeDay.propTypes={
+export default Forecast;
+Forecast.propTypes={
   forecast:PropTypes.array
 }

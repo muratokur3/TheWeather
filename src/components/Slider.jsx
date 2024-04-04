@@ -49,7 +49,7 @@ function Slider() {
       <MobileStepper
         sx={{
           height: "3rem",
-          background: isPhone || isTablet ? "black" : "none",
+          background:  "#13131A",
           position: isPhone || isTablet ? "fixed" : "static",
           bottom: 0,
           left: 0,

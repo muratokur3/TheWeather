@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import Header from "./Header";
 import Details from "./Details";
 import PropTypes from "prop-types";
-import FifeDay from "./FifeDay";
+import Forecast from "./Forecast";
 
 
 const CityWeatherDetails = ({city}) => {
@@ -35,13 +35,15 @@ const CityWeatherDetails = ({city}) => {
         display: "flex",
         width: "100%",
         gap: "1rem",
+        backgroundColor:"#13131A",
+        padding: "1rem",
       }}
     >
       <Header detail={headerDetail} />
 
       <Details detail={detailDetail} />
 
-      <FifeDay forecast={forecast} />
+      <Forecast forecast={forecast} />
 
    
     </Box>

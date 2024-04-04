@@ -1,44 +1,46 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
 import SearchCity from "../components/SearchCity";
 import { Avatar, Typography } from "@mui/material";
 import logo from "../../src/assets/marca.svg";
 import background from "../assets/Background/Background.svg";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 const style = {
   width:"100%",
-  height:"50%",
+  height:"80%",
+  background:"none",
   display: "flex",
   flexDirection: "column",
-  justifyContent:"space-between",
+  justifyContent:"space-evenly",
   alignItems: "center",
-  gap: "20%",
-  bgcolor: "none",
-
-  p: 4,
+  border: "none",
 };
 
-
-const AddCity = () => {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+const Welcome = () => {
+    const navigate=useNavigate()
+  const handleClose = () => navigate("/");
+  useEffect(() => {
+   localStorage.clear();
+  })
   return (
-    <Box>
-      <Button variant="outlined" size="large" onClick={handleOpen}
-          
-     >
-      Yeni Şehir Ekle
-      </Button>
+    <Box sx={{
+        position:"absolute",
+        top:0,
+        left:0,
+        zIndex:2,
+        width:"100vw",
+        height:"100vh",
+        display:"flex",
+        justifyContent:"center",
+        background: `url(${background})`,
+        backgroundSize: "cover",
+        backgroundRepeat:"repeat",
+        backgroundColor:"none"
+  }}>
     
-      <Modal open={open} onClose={handleClose} fullWid sx={{
-             background: `url(${background})`,
-             backgroundSize: "cover",
-             backgroundRepeat:"repeat"
-      }}>
         <Box sx={style}>
           <Box
+            // margin={"10vw 0"}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -48,6 +50,7 @@ const AddCity = () => {
             <Avatar src={logo} />
             <Typography variant="h3" color="#BFBFD4">TheWeather </Typography>{" "}
           </Box>
+
           <Box
             sx={{
               display: "flex",
@@ -57,7 +60,12 @@ const AddCity = () => {
               justifyContent: "center",
             }}
           >
-          
+            <Box display={"flex"} gap={2}>
+              <Typography variant="h4" color={"#8FB2F5"}>
+                TypeWeather
+              </Typography>
+              <Typography variant="h4" color="#BFBFD4">Hoş Geldiniz</Typography>
+            </Box>
 
             <Typography fontSize={"1rem"} color="#7F7F98">
               Hava tahminini görmek için bir konum seçin
@@ -66,8 +74,8 @@ const AddCity = () => {
             <SearchCity closeModal={handleClose} />
           </Box>
         </Box>
-      </Modal>
+   
     </Box>
   );
 };
-export default AddCity;
+export default Welcome;

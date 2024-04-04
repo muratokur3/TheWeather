@@ -62,7 +62,7 @@ const Sidebar = () => {
         }}>
         <AddCity />
         </Box>
-        <CityList onClose={handleOpen}/>
+        <CityList/>
       </Box>
 
       <Box

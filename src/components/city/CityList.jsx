@@ -28,6 +28,9 @@ const CityList = ({onClose}) => {
 };
 
 export default CityList;
+CityList.defaultProps = {
+  onClose: () => {},
+};
 CityList.propTypes={
   onClose:PropTypes.func
 }

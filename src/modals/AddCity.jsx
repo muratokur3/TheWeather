@@ -31,7 +31,7 @@ const AddCity = () => {
       Yeni Şehir Ekle
       </Button>
     
-      <Modal open={open} onClose={handleClose} fullWid sx={{
+      <Modal open={open} onClose={handleClose} sx={{
              background: `url(${background})`,
              backgroundSize: "cover",
              backgroundRepeat:"repeat"

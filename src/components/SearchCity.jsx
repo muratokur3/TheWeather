@@ -86,7 +86,7 @@ const SearchCity = () => {
         sx={{
           width: "100%",
           maxWidth: "500px",
-          backgroundColor: loading ? "#ABABC4" : "#13131A",
+          backgroundColor: loading ? "#3B3B54" : "#1E1E29",
           borderRadius: ".5rem",
           boxShadow: "0px 2px 4px rgba(0,0,0,0.1)",
           padding: "10px",

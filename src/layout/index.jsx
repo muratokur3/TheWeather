@@ -33,7 +33,7 @@ const Layout = () => {
     width: isPhone ? "100%" : isTablet ? "80%" : "50%",
     minHeight: "100vh",
     backgroundColor: "none",
-    padding: "1rem 0",
+    // padding: `8px 8px ${(isPhone||isTablet)?"40px":"20px"} 8px`,
     overflowX: "hidden",
   });
 

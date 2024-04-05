@@ -8,7 +8,6 @@ import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 import { Background } from "../../utils/getBackground";
 import { getIcon } from "../../utils/getIcons";
-import { getName } from "country-list";
 
 const Typography = styled(styledTypography)({
   color: "white",
@@ -20,18 +19,11 @@ const Header = ({ detail }) => {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
         width: "100%",
-        height: "30vh",
-        minHeight: "200px",
+        height: "100%",
+        backgroundColor: "#16161F",
+        borderRadius: ".75rem",
         padding: "1rem",
-        position: "relative",
-        backgroundImage: `url(${Background(detail.icon)})`,
-        backgroundSize: "cover",
-        borderRadius: "1rem",
-        overflow: "hidden",
       }}
     >
       <Box
@@ -39,13 +31,30 @@ const Header = ({ detail }) => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          alignItems: "start",
+          width: "100%",
+          height: "35vh",
+          minHeight: "300px",
+          padding: "1rem",
+          position: "relative",
+          backgroundImage: `url(${Background(detail.icon)})`,
+          backgroundSize: "cover",
+          borderRadius: "1rem",
+          overflow: "hidden",
         }}
       >
         <Box>
           <Typography variant={isPhone ? "h5" : "h4"}>
             {detail.name} - {detail?.country}
           </Typography>
-          <Typography variant={"body2"} fontSize={11}>
+          <Typography
+            variant={!isPhone && "body2"}
+            sx={{
+              fontSize: "0.75rem", // 12px
+              fontWeight: 400,
+              lineHeight: 1.4,
+            }}
+          >
             {new Date(detail.date * 1000).toLocaleDateString("tr-TR", {
               weekday: "long",
               month: "long",
@@ -53,40 +62,39 @@ const Header = ({ detail }) => {
               year: "numeric",
             })}
           </Typography>
-          <Typography variant="body2">
-            {new Date(detail.date * 1000).toLocaleTimeString("tr-TR", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </Typography>
         </Box>
 
         <Box>
-          <Typography variant={isPhone?"h3":"h3"}>{detail.temp}°C</Typography>
-          <Typography variant={isPhone ? "body2" : "body1"}>
-            {detail.minTemp}°C / {detail.maxTemp}°C
+          <Typography
+            variant={isPhone && "h2"}
+            sx={!isPhone&&{
+              fontSize: "4.5rem", // 48px
+              fontWeight: 700,
+              lineHeight: 1.2,
+            }}
+          >
+            {detail.temp}°c
           </Typography>
-          <Typography variant="body1">{detail.description}</Typography>
+          <Typography variant={isPhone ? "h5" : "h4"}>
+            {detail.minTemp}°c / {detail.maxTemp}°c
+          </Typography>
+          <Typography variant="body2">
+            {" "}
+            Hava {detail.description}
+          </Typography>
         </Box>
-      </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "end",
-        }}
-      >
         <Avatar
           variant="rounded"
           sx={{
             width: "150px",
             height: "150px",
+            position: "absolute",
+            bottom: 0,
+            right: 0,
           }}
           src={getIcon(detail.icon)}
         />
-
-        <Box />
-        {/* </Box> */}
       </Box>
     </Box>
   );

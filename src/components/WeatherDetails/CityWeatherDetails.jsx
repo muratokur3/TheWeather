@@ -34,7 +34,7 @@ const CityWeatherDetails = ({city}) => {
         minHeight: "100%",
         display: "flex",
         width: "100%",
-        gap: "1rem",
+        gap: ".7rem",
         backgroundColor:"#13131A",
         padding: "1rem",
       }}

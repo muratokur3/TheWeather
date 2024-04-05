@@ -1,12 +1,10 @@
 import { styled } from "@mui/material/styles";
 import RemoveIcon from "@mui/icons-material/Remove";
 import IconButton from "@mui/material/IconButton";
-import { Avatar, Typography as StyleTypography } from "@mui/material";
+import { Avatar, Typography as StyleTypography,Box } from "@mui/material";
 import PropTypes from "prop-types";
-import { setActiveCity } from "../../redux/slices/CitySlice";
+import { setActiveCity,removeCity } from "../../redux/slices/CitySlice";
 import { useDispatch } from "react-redux";
-import { Box } from "@mui/material";
-import { removeCity } from "../../redux/slices/CitySlice";
 import { Background } from "../../utils/getBackground";
 import { getIcon } from "../../utils/getIcons";
 const ExpandMore = styled((props) => {

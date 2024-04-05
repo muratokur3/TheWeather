@@ -4,11 +4,7 @@ import { Typography } from "@mui/material";
 import background from "../assets/Background/Background.svg";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-// import { EditOutlined } from "@mui/icons-material";
-// import { fetchWeatherData } from "../redux/actions/Cities";
 import { useSelector } from "react-redux";
-// import axios from "axios";
-// import Loading from "../components/Loading";
 const style = {
   width: "100vw",
   height: "100vh",
@@ -30,7 +26,7 @@ const Welcome = () => {
 
   useEffect(() => {
     // weatherData.length === 0?  localStorage.clear():navigate("/TheWeather/");
-    weatherData.length === 0 ? localStorage.clear() : navigate("/");
+    weatherData.length === 0 ? localStorage.clear() : null;
     // weatherData.length === 0? getMyLocation():setLoading(false);
   }, [weatherData, navigate]);
   return (
@@ -50,7 +46,6 @@ const Welcome = () => {
         backgroundColor: "none",
       }}
     >
-      {/* {loading && <Loading />} */}
       <Box sx={style}>
         <Box
           // margin={"10vw 0"}
@@ -98,11 +93,7 @@ const Welcome = () => {
             }}
           >
             <SearchCity />
-            {/* <Button
-            onClick={()=>getMyLocation()}>Konumum</Button>
-            <Button
-            onClick={()=>console.log(location)}>Konumumuz</Button>
-             */}
+           
           </Box>
         </Box>
       </Box>

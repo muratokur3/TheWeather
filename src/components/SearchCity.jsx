@@ -2,34 +2,91 @@ import { Box, Typography, InputBase } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { getName } from "country-list";
 import axios from "../../axiosConfig";
-import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { setCity } from "../redux/slices/CitySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWeatherData } from "../redux/actions/Cities";
-import { useTheme } from "@mui/material/styles";
-const SearchBar = ({ closeModal }) => {
-  const theme = useTheme();
+import { useNavigate } from "react-router-dom";
+const SearchCity = () => {
   const dispatch = useDispatch();
   const stateStatus = useSelector((state) => state.weatherData.status);
+  const weatherData = useSelector((state) => state.weatherData.cities);
 
+  const navigate = useNavigate();
   const [citys, setCitys] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [location, setLocation] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const getCityNameAndFetchWeather = async () => {
+    if (location && location.lat && location.lon) {
+      try {
+        const response = await axios(
+          `http://api.openweathermap.org/geo/1.0/reverse?lat=${location.lat}&lon=${location.lon}&limit=1&appid=86b64ed4b41660da65c6a57d3e975798`
+        );
+        setSearchInput(await response.data[0].name);
+        // alert("Şehir adı geldi:", searchInput);
+        setLoading(false);
+      } catch (error) {
+        console.error("Şehir adı alınamadı:", error);
+        setLoading(false);
+      }
+    }
+  };
 
-  const search = async (text) => {
-    const response = await axios(`geo/1.0/direct?q=${text}&limit=4`);
+  const getMyLocation = async () => {
+    // Kullanıcının konumunu alma
+    try {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ lat: latitude, lon: longitude });
+          console.log("Konum geldi:", location);
+        },
+        (error) => {
+          console.error("Konum alınamadı:", error);
+          console.log("Konum alınamadı:", error);
+          alert("Konum alınamadı");
+          setLoading(false);
+        }
+      );
+    } catch (error) {
+      console.error("Konum alınamadı:", error);
+      console.log("Konum alınamadı:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (weatherData.length === 0 && location == null) {
+      localStorage.clear();
+      getMyLocation();
+      setLoading(true);
+    }
+    location !== null && getCityNameAndFetchWeather();
+    // weatherData.length === 0? getMyLocation():setLoading(false);
+  }, [location]);
+
+  useEffect(() => {
+    if (searchInput.length !== 0) {
+      handleSearch();
+    }
+  }, [searchInput]);
+
+  const handleSearch = async () => {
+    const response = await axios(`geo/1.0/direct?q=${searchInput}&limit=4`);
     if (response.status === 200) {
       setCitys(response.data);
     }
   };
+
   const handleCity = async (value) => {
     if (value.length !== 0) {
       try {
-        dispatch(fetchWeatherData(value.name));
+        dispatch(fetchWeatherData(value?.name));
         setCitys([]);
       } catch (error) {
         console.error(error);
       } finally {
-         closeModal();
+        navigate("/");
       }
     }
   };
@@ -42,8 +99,9 @@ const SearchBar = ({ closeModal }) => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        background: "#1E1E29",
+        background: "none",
         position: "relative",
+        
       }}
     >
       <Box
@@ -51,6 +109,7 @@ const SearchBar = ({ closeModal }) => {
           width: "100%",
           height: "auto",
           position: "relative",
+          background:"none"
         }}
       >
         <Box
@@ -58,18 +117,21 @@ const SearchBar = ({ closeModal }) => {
             padding: ".5rem 1.5rem",
             display: "flex",
             flexDirection: "row",
-            borderRadius: ".7rem",
+            borderRadius: "1rem",
             alignItems: "center",
+            backgroundColor:loading? "white":"#1E1E29",
           }}
         >
           <InputBase
             sx={{
               width: "100%",
               color: "#BFBFD4",
-              fontSize: "1.2rem",
             }}
-            placeholder="Konum ara"
-            onChange={(e) => search(e.target.value)}
+            value={searchInput}
+            disabled={loading}
+            placeholder={loading ? "Konumunuz alınıyor...": "Konum ara"}
+            placeholderTextColor={"#BFBFD4"}
+            onChange={(e) => setSearchInput(e.target.value)}
           />
           {stateStatus == "loading" && (
             <CircularProgress size={"2rem"} sx={{ color: "white" }} />
@@ -128,7 +190,4 @@ const SearchBar = ({ closeModal }) => {
     </Box>
   );
 };
-export default SearchBar;
-SearchBar.propTypes = {
-  closeModal: PropTypes.func.isRequired,
-};
+export default SearchCity;

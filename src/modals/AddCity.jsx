@@ -62,7 +62,7 @@ const AddCity = () => {
               Hava tahminini görmek için bir konum seçin
             </Typography>
 
-            <SearchCity closeModal={handleClose} />
+            <SearchCity />
           </Box>
         </Box>
       </Modal>

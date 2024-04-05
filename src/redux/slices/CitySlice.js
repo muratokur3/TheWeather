@@ -8,7 +8,7 @@ const localData = localStorage.getItem("weatherData");
 const initialState = localData
   ? loadFromLocalStorage()
   : {
-      cities: [], // Şehirler için boş bir dizi
+      cities: [], 
       activeCity: null,
       status: "idle",
       error: null,

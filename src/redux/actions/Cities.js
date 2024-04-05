@@ -7,10 +7,17 @@ export const fetchWeatherData = createAsyncThunk(
       try {
         // Axios istekleri için gerçek API URL'leri ve parametrelerinizi ekleyin
         const weatherResponse = await axios.get(
-          `data/2.5/weather?q=${cityName},lang=tr&units=metric`
+          `data/2.5/weather?`,
+          {
+            params: {
+              q: cityName,
+              units: "metric",
+              lang: "tr"
+            },
+          }
         );
   
-        const forecastResponse = await axios.get(`data/2.5/forecast`, {
+        const forecastResponse = await axios.get(`data/2.5/forecast?`, {
           params: {
             q: cityName,
             units: "metric",

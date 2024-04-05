@@ -6,7 +6,6 @@ import axios from "../../axiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWeatherData } from "../redux/actions/Cities";
 import { useNavigate } from "react-router-dom";
-import { debounce } from "lodash"; // lodash debounce fonksiyonunu import edin
 
 const SearchCity = () => {
   const dispatch = useDispatch();
@@ -48,20 +47,14 @@ const SearchCity = () => {
     }
   }, [searchInput, cities, getMyLocation]);
 
-  const handleSearch = useCallback(
-    debounce(async (searchTerm) => {
-      setLoading(true);
+  const handleSearch =async (searchTerm) => {
       try {
         const response = await axios(`geo/1.0/direct?q=${searchTerm}&limit=4`);
         setCitys(response.data);
       } catch (error) {
         console.error("Arama sırasında hata oluştu:", error);
-      } finally {
-        setLoading(false);
-      }
-    }, 1000),
-    []
-  );
+      } 
+    };
 
   const handleCitySelection = async (city) => {
     try {
@@ -69,7 +62,7 @@ const SearchCity = () => {
       await dispatch(fetchWeatherData(city.name));
       setSearchInput(city.name);
       if (citiesStatus === "succeeded") {
-        navigate("/");
+        navigate("/TheWeather");
       }
     } catch (error) {
       console.error("Hava durumu verisi alınırken hata oluştu:", error);

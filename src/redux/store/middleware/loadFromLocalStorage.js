@@ -1,15 +1,18 @@
-export const loadFromLocalStorage=()=> {
-    try {
-      const serializedState = localStorage.getItem('weatherData');
-      if (serializedState === null) {
-        // localStorage'da 'cities' anahtarı yoksa, boş bir dizi veya
-        // varsayılan durumu döndür
-        return [];
-      }
-      return JSON.parse(serializedState);
-    } catch (err) {
-      // Deserialization hatası olursa, boş bir dizi veya varsayılan durumu döndür
-      console.error("Could not load cities from localStorage", err);
-      return [];
+// loadFromLocalStorage.js
+export const loadFromLocalStorage = () => {
+  try {
+    const serializedState = localStorage.getItem('weatherData');
+    if (serializedState === null) {
+      return undefined; // veya localStorage'da hiçbir şey yoksa istediğiniz başlangıç durumunu döndürün
     }
+    const state = JSON.parse(serializedState);
+    // cities dizisi var ve boş değilse, activeCity'i cities'in ilk elemanının ismi olarak ayarla
+    if (state.cities && !state.cities.find(city => city.name === state.activeCity)) {
+      state.activeCity = state.cities[0].name;
+    }
+    return state;
+  } catch (err) {
+    console.error("Could not load state from localStorage", err);
+    return undefined; // veya hata durumunda istediğiniz başlangıç durumunu döndürün
   }
+};

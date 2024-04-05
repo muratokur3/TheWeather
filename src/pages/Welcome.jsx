@@ -3,21 +3,24 @@ import SearchCity from "../components/SearchCity";
 import { Typography } from "@mui/material";
 import background from "../assets/Background/Background.svg";
 import { useNavigate } from "react-router-dom";
-import { useEffect  } from "react";
+import { useEffect } from "react";
 // import { EditOutlined } from "@mui/icons-material";
 // import { fetchWeatherData } from "../redux/actions/Cities";
 import { useSelector } from "react-redux";
 // import axios from "axios";
 // import Loading from "../components/Loading";
 const style = {
-  width: "100%",
-  height: "80%",
+  width: "100vw",
+  height: "100vh",
   background: "none",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-evenly",
   alignItems: "center",
   border: "none",
+  position: "fixed",
+  top: "0",
+  left: "0",
 };
 
 const Welcome = () => {
@@ -25,15 +28,11 @@ const Welcome = () => {
 
   const navigate = useNavigate();
 
- 
-
-
-
   useEffect(() => {
     // weatherData.length === 0?  localStorage.clear():navigate("/TheWeather/");
-    weatherData.length === 0?  localStorage.clear():navigate("/");
+    weatherData.length === 0 ? localStorage.clear() : navigate("/");
     // weatherData.length === 0? getMyLocation():setLoading(false);
-  }, [weatherData,navigate]);
+  }, [weatherData, navigate]);
   return (
     <Box
       sx={{
@@ -89,14 +88,16 @@ const Welcome = () => {
             Hava tahminini görmek için bir konum seçin
           </Typography>
 
-          <Box   sx={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 2,
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-            <SearchCity  />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 2,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <SearchCity />
             {/* <Button
             onClick={()=>getMyLocation()}>Konumum</Button>
             <Button

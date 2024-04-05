@@ -5,11 +5,11 @@ import { getName } from "country-list";
 import axios from "../../axiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWeatherData } from "../redux/actions/Cities";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const SearchCity = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [citys, setCitys] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -32,6 +32,7 @@ const SearchCity = () => {
           console.error("Konumdan şehir adı alınamadı:", error);
         } finally {
           setLoading(false);
+          // closeModal();
         }
       },
       (error) => {
@@ -62,7 +63,7 @@ const SearchCity = () => {
       await dispatch(fetchWeatherData(city.name));
       setSearchInput(city.name);
       if (citiesStatus === "succeeded") {
-        navigate("/");
+        // closeModal();
       }
     } catch (error) {
       console.error("Hava durumu verisi alınırken hata oluştu:", error);

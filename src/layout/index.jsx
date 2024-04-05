@@ -1,33 +1,16 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { Box, useMediaQuery } from "@mui/material";
 import styled from "@emotion/styled";
 import Sidebar from "../components/Sidebar";
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import background from "../assets/Background/Background.svg";
+import Welcome from "../pages/Welcome";
 
 const Layout = () => {
-
-  const navigate = useNavigate();
-  const weatherData = useSelector((state) => state.weatherData.cities);
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     dispatch(fetchWeatherData());
-  //   }, 3600000 * 2); // 2 saat
-
-  //   return () => clearInterval(intervalId);
-  // }, [dispatch]);
-
-  useEffect(() => {
-    if (weatherData.length === 0) {
-      // navigate("/TheWeather/welcome");
-      navigate("/welcome");
-      console.log("Şehir verisi boş, welcome sayfasına yönlendiriliyor");
-    }
-  }, [weatherData, navigate]);
-
   const isPhone = useMediaQuery("(max-width: 600px)");
   const isTablet = useMediaQuery("(min-width: 600px) and (max-width: 1234px)");
+
+  const weatherData = useSelector((state) => state.weatherData.cities);
 
   const Container = styled(Box)({
     width: "100%",
@@ -57,6 +40,7 @@ const Layout = () => {
   return (
     <Container>
       {!isPhone && !isTablet && <Sidebar />}
+      {weatherData.length === 0 && <Welcome />}
       <Content>
         <Outlet />
       </Content>

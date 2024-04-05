@@ -14,7 +14,6 @@ const style = {
   alignItems: "center",
   gap: "20%",
   bgcolor: "none",
-
   p: 4,
 };
 
@@ -25,9 +24,7 @@ const AddCity = () => {
   const handleClose = () => setOpen(false);
   return (
     <Box>
-      <Button variant="outlined" size="large" onClick={handleOpen}
-          
-     >
+      <Button variant="outlined" size="large" onClick={handleOpen}>
       Yeni Şehir Ekle
       </Button>
     
@@ -62,7 +59,7 @@ const AddCity = () => {
               Hava tahminini görmek için bir konum seçin
             </Typography>
 
-            <SearchCity />
+            <SearchCity closeModal={handleClose}/>
           </Box>
         </Box>
       </Modal>

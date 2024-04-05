@@ -1,93 +1,78 @@
+import { useEffect, useState, useCallback } from "react";
 import { Box, Typography, InputBase } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { getName } from "country-list";
 import axios from "../../axiosConfig";
-import { useEffect, useState } from "react";
-// import { setCity } from "../redux/slices/CitySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWeatherData } from "../redux/actions/Cities";
 import { useNavigate } from "react-router-dom";
+import { debounce } from "lodash"; // lodash debounce fonksiyonunu import edin
+
 const SearchCity = () => {
   const dispatch = useDispatch();
-  const stateStatus = useSelector((state) => state.weatherData.status);
-  const weatherData = useSelector((state) => state.weatherData.cities);
-
   const navigate = useNavigate();
   const [citys, setCitys] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(false);
-  const getCityNameAndFetchWeather = async () => {
-    if (location && location.lat && location.lon) {
-      try {
-        const response = await axios(
-          `http://api.openweathermap.org/geo/1.0/reverse?lat=${location.lat}&lon=${location.lon}&limit=1&appid=86b64ed4b41660da65c6a57d3e975798`
-        );
-        setSearchInput(await response.data[0].name);
-        // alert("Şehir adı geldi:", searchInput);
+  const cities = useSelector((state) => state.weatherData.cities);
+  const citiesStatus = useSelector((state) => state.weatherData.status);
+  const getMyLocation = useCallback(async () => {
+    setLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const response = await axios(
+            `geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1`
+          );
         setLoading(false);
-      } catch (error) {
-        console.error("Şehir adı alınamadı:", error);
-        setLoading(false);
-      }
-    }
-  };
-
-  const getMyLocation = async () => {
-    // Kullanıcının konumunu alma
-    try {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          setLocation({ lat: latitude, lon: longitude });
-          console.log("Konum geldi:", location);
-        },
-        (error) => {
-          console.error("Konum alınamadı:", error);
-          console.log("Konum alınamadı:", error);
-          alert("Konum alınamadı");
+        setSearchInput(response.data[0].name)
+        const cityName = response.data[0].name;
+          dispatch(fetchWeatherData(cityName));
+        } catch (error) {
+          console.error("Konumdan şehir adı alınamadı:", error);
+        } finally {
           setLoading(false);
         }
-      );
-    } catch (error) {
-      console.error("Konum alınamadı:", error);
-      console.log("Konum alınamadı:", error);
-    }
-  };
+      },
+      (error) => {
+        console.error("Konum alınamadı:", error);
+        setLoading(false);
+      }
+    );
+  }, [dispatch]);
 
   useEffect(() => {
-    if (weatherData.length === 0 && location == null) {
-      localStorage.clear();
+    if (cities.length === 0) {
       getMyLocation();
+    }
+  }, [searchInput, cities, getMyLocation]);
+
+  const handleSearch = useCallback(
+    debounce(async (searchTerm) => {
       setLoading(true);
-    }
-    location !== null && getCityNameAndFetchWeather();
-    // weatherData.length === 0? getMyLocation():setLoading(false);
-  }, [location]);
-
-  useEffect(() => {
-    if (searchInput.length !== 0) {
-      handleSearch();
-    }
-  }, [searchInput]);
-
-  const handleSearch = async () => {
-    const response = await axios(`geo/1.0/direct?q=${searchInput}&limit=4`);
-    if (response.status === 200) {
-      setCitys(response.data);
-    }
-  };
-
-  const handleCity = async (value) => {
-    if (value.length !== 0) {
       try {
-        dispatch(fetchWeatherData(value?.name));
-        setCitys([]);
+        const response = await axios(`geo/1.0/direct?q=${searchTerm}&limit=4`);
+        setCitys(response.data);
       } catch (error) {
-        console.error(error);
+        console.error("Arama sırasında hata oluştu:", error);
       } finally {
+        setLoading(false);
+      }
+    }, 1000),
+    []
+  );
+
+  const handleCitySelection = async (city) => {
+    try {
+      // fetchWeatherData işlemi tamamlanana kadar bekler
+      await dispatch(fetchWeatherData(city.name));
+      setSearchInput(city.name);
+      if (citiesStatus === "succeeded") {
         navigate("/");
       }
+    } catch (error) {
+      console.error("Hava durumu verisi alınırken hata oluştu:", error);
     }
   };
 
@@ -99,92 +84,88 @@ const SearchCity = () => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        background: "none",
+        alignItems: "center",
         position: "relative",
-        
       }}
     >
       <Box
         sx={{
           width: "100%",
-          height: "auto",
+          maxWidth: "500px",
+          backgroundColor: loading ? "#ABABC4" : "#13131A",
+          borderRadius: ".5rem",
+          boxShadow: "0px 2px 4px rgba(0,0,0,0.1)",
+          padding: "10px",
+          display: "flex",
+          alignItems: "center",
           position: "relative",
-          background:"none"
         }}
       >
-        <Box
-          sx={{
-            padding: ".5rem 1.5rem",
-            display: "flex",
-            flexDirection: "row",
-            borderRadius: "1rem",
-            alignItems: "center",
-            backgroundColor:loading? "white":"#1E1E29",
+        <InputBase
+          sx={{ ml: 1, flex: 1, color: "#BFBFD4" }}
+          placeholder={loading ? "Konum alınıyor..." : "Şehir Ara..."}
+          inputProps={{ "aria-label": "Şehir ara" }}
+          value={searchInput}
+          onChange={(e) => {
+            setSearchInput(e.target.value);
+            handleSearch(e.target.value);
           }}
-        >
-          <InputBase
+          disabled={loading}
+        />
+        {(loading || citiesStatus === "loading") && (
+          <CircularProgress
+            size={24}
             sx={{
-              width: "100%",
-              color: "#BFBFD4",
+              color: loading ? "#3B3B54" : "#BFBFD4",
+              position: "absolute",
+              top: "50%",
+              right: "10px",
+              marginTop: "-12px",
             }}
-            value={searchInput}
-            disabled={loading}
-            placeholder={loading ? "Konumunuz alınıyor...": "Konum ara"}
-            placeholderTextColor={"#BFBFD4"}
-            onChange={(e) => setSearchInput(e.target.value)}
           />
-          {stateStatus == "loading" && (
-            <CircularProgress size={"2rem"} sx={{ color: "white" }} />
-          )}
-        </Box>
+        )}
       </Box>
       {citys.length > 0 && (
         <Box
           sx={{
-            minWidth: "100%",
+            width: "100%",
+            maxWidth: "100%",
+            backgroundColor: "none",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "none",
-            borderRadius: ".5rem",
-            color: "#BFBFD4",
-            gap: ".2rem",
-            fontSize: "1.2rem",
+            gap: ".1rem",
             position: "absolute",
-            top: "120%",
+            zIndex: 1,
+            top: "111%",
             left: 0,
-            zIndex: 223323,
           }}
         >
-          {citys.map((item, index) => {
-            return (
-              <Typography
-                key={index}
-                sx={{
-                  width: "100%",
-                  backgroundColor: "#3B3B54",
-                  border: "none",
-                  padding: "1rem 1.5rem",
-                  cursor: "pointer",
-                  borderRadius:
-                    index === 0
-                      ? citys.length === 1
-                        ? ".5rem"
-                        : ".5rem .5rem 0 0"
-                      : index === citys.length - 1
-                      ? "0 0 .5rem .5rem"
-                      : "0",
-                  "&:hover": {
-                    backgroundColor: "#4B4B64",
-                  },
-                }}
-                onClick={() => handleCity(item)}
-              >
-                {item.name} - {getName(item.country)}
-              </Typography>
-            );
-          })}
+          {citys.map((city, index) => (
+            <Typography
+              key={index}
+              sx={{
+                backgroundColor: "#3B3B54",
+                border: "none",
+                padding: "1rem 1.5rem",
+                cursor: "pointer",
+                color: "#BFBFD4",
+                borderRadius:
+                  index === 0
+                    ? citys.length === 1
+                      ? ".5rem"
+                      : ".5rem .5rem 0 0"
+                    : index === citys.length - 1
+                    ? "0 0 .5rem .5rem"
+                    : "0",
+                "&:hover": {
+                  backgroundColor: "#4B4B64",
+                },
+              }}
+              onClick={() => handleCitySelection(city)}
+            >
+              {city.name} - {getName(city.country)}
+            </Typography>
+          ))}
         </Box>
       )}
     </Box>

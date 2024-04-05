@@ -30,6 +30,7 @@ const Welcome = () => {
 
 
   useEffect(() => {
+    // weatherData.length === 0?  localStorage.clear():navigate("/TheWeather/");
     weatherData.length === 0?  localStorage.clear():navigate("/");
     // weatherData.length === 0? getMyLocation():setLoading(false);
   }, [weatherData,navigate]);

@@ -20,6 +20,7 @@ const Layout = () => {
 
   useEffect(() => {
     if (weatherData.length === 0) {
+      // navigate("/TheWeather/welcome");
       navigate("/welcome");
       console.log("Şehir verisi boş, welcome sayfasına yönlendiriliyor");
     }

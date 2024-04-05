@@ -3,11 +3,11 @@ import { Box, useMediaQuery } from "@mui/material";
 import styled from "@emotion/styled";
 import Sidebar from "../components/Sidebar";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import background from "../assets/Background/Background.svg";
 
 const Layout = () => {
-  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const weatherData = useSelector((state) => state.weatherData.cities);
   // useEffect(() => {
@@ -19,10 +19,11 @@ const Layout = () => {
   // }, [dispatch]);
 
   useEffect(() => {
-    weatherData.length === 0 &&
-      navigate("/welcome") &&
-      console.log("şehir boş");
-  }, [weatherData, dispatch, navigate]);
+    if (weatherData.length === 0) {
+      navigate("/welcome");
+      console.log("Şehir verisi boş, welcome sayfasına yönlendiriliyor");
+    }
+  }, [weatherData, navigate]);
 
   const isPhone = useMediaQuery("(max-width: 600px)");
   const isTablet = useMediaQuery("(min-width: 600px) and (max-width: 1234px)");

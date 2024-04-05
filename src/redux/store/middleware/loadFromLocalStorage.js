@@ -7,7 +7,7 @@ export const loadFromLocalStorage = () => {
     }
     const state = JSON.parse(serializedState);
     // cities dizisi var ve boş değilse, activeCity'i cities'in ilk elemanının ismi olarak ayarla
-    if (state.cities && !state.cities.find(city => city.name === state.activeCity)) {
+    if (state.cities && state.cities.length > 0) {
       state.activeCity = state.cities[0].name;
     }
     return state;

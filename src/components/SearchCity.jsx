@@ -62,7 +62,7 @@ const SearchCity = () => {
       await dispatch(fetchWeatherData(city.name));
       setSearchInput(city.name);
       if (citiesStatus === "succeeded") {
-        navigate("/TheWeather");
+        navigate("/");
       }
     } catch (error) {
       console.error("Hava durumu verisi alınırken hata oluştu:", error);

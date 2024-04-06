@@ -1,16 +1,15 @@
 import Box from "@mui/material/Box";
 import SearchCity from "../components/SearchCity";
-import { Typography } from "@mui/material";
+import { Typography,Avatar } from "@mui/material";
 import background from "../assets/Background/Background.svg";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import logo from "../assets/logo/marca.svg";
+
 const style = {
   width: "100vw",
-  height: "60vh",
-  background: `url(${background})`,
-  backgroundSize: "cover",
-  backgroundRepeat: "repeat",
+  height: "65vh",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-around",
@@ -34,18 +33,8 @@ const Welcome = () => {
   }, [weatherData, navigate]);
   return (
     <Box sx={style}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-        }}
-      >
-        {/* <Avatar src={logo} /> */}
-        <Typography variant="h3" color="#BFBFD4">
-          TheWeather{" "}
-        </Typography>{" "}
-      </Box>
+            {/* <Avatar src={logo} sx={{width:"186px",height:"32px"}}/> */}
+            <Avatar src={logo} sx={{width:"300px",height:"50px"}}/>
 
       <Box
         sx={{

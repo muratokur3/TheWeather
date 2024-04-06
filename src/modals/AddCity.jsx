@@ -3,18 +3,20 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import SearchCity from "../components/SearchCity";
-import { Typography } from "@mui/material";
+import { Typography,Avatar } from "@mui/material";
 import background from "../assets/Background/Background.svg";
+import logo from "../assets/logo/marca.svg";
 const style = {
-  width:"100%",
-  height:"50%",
+  width:"auto",
+  height:"60%",
   display: "flex",
   flexDirection: "column",
-  justifyContent:"space-between",
+  justifyContent:"space-evenly",
   alignItems: "center",
   gap: "20%",
   bgcolor: "none",
   p: 4,
+  backgroundColor:"none"
 };
 
 
@@ -31,19 +33,13 @@ const AddCity = () => {
       <Modal open={open} onClose={handleClose} sx={{
              background: `url(${background})`,
              backgroundSize: "cover",
-             backgroundRepeat:"repeat"
+             display:"flex",
+              justifyContent:"center",
       }}>
         <Box sx={style}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-            }}
-          >
-            {/* <Avatar src={logo} /> */}
-            <Typography variant="h3" color="#BFBFD4">TheWeather </Typography>{" "}
-          </Box>
+         
+            {/* <Avatar src={logo} sx={{width:"186px",height:"32px"}}/> */}
+            <Avatar src={logo} sx={{width:"300px",height:"50px"}}/>
           <Box
             sx={{
               display: "flex",

@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import Sidebar from "../components/Sidebar";
 import { useSelector } from "react-redux";
 import background from "../assets/Background/Background.svg";
-import Welcome from "../pages/Welcome";
+import Welcome from "../components/search/Welcome";
 
 const Layout = () => {
   const isPhone = useMediaQuery("(max-width: 600px)");
@@ -23,6 +23,7 @@ const Layout = () => {
     position: "relative",
     background: "#1a1a1c",
     backgroundImage: `url(${background})`,
+    backgroundSize:"cover",
     overflow: "hidden",
   });
 

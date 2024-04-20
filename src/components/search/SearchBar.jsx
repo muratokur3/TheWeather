@@ -2,12 +2,12 @@ import { useEffect, useState, useCallback } from "react";
 import { Box, Typography, InputBase } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { getName } from "country-list";
-import axios from "../../axiosConfig";
+import axios from "../../../axiosConfig";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchWeatherData } from "../redux/actions/Cities";
+import { fetchWeatherData } from "../../redux/actions/Cities";
 // import { useNavigate } from "react-router-dom";
 
-const SearchCity = () => {
+const SearchBar = () => {
   const dispatch = useDispatch();
   // const navigate = useNavigate();
   const [citys, setCitys] = useState([]);
@@ -165,4 +165,4 @@ const SearchCity = () => {
     </Box>
   );
 };
-export default SearchCity;
+export default SearchBar;

@@ -7,6 +7,7 @@ import { setActiveCity,removeCity } from "../../redux/slices/CitySlice";
 import { useDispatch } from "react-redux";
 import { Background } from "../../utils/getBackground";
 import { getIcon } from "../../utils/getIcons";
+import { updateCityData } from "../../redux/actions/Cities";
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -26,6 +27,8 @@ const CityCard = ({ city, onClose }) => {
   });
 
   const handleClickCity = (name) => {
+    dispatch(updateCityData(name,city.dt));
+
     dispatch(setActiveCity(name));
     onClose();
   };

@@ -16,7 +16,6 @@ const CitysListModal = () => {
     flexDirection: "column",
     alignItems: "center",
     gap: "5%",
-    // bgcolor: "rgba(0, 0, 0, 0.753)",
     background:"#13131A",
     border: "2px solid #000",
     boxShadow: 24,

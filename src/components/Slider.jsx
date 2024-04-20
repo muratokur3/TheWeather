@@ -10,8 +10,11 @@ import CityWeatherDetails from "./WeatherDetails/CityWeatherDetails";
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "@mui/material";
 import CitysListModal from "../modals/CitysListModal";
+import { updateCityData } from "../redux/actions/Cities";
+import { useDispatch } from "react-redux";
 
 function Slider() {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
 
@@ -21,12 +24,14 @@ function Slider() {
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => (prevActiveStep + 1) % maxSteps);
+    dispatch(updateCityData(cities[activeStep+1].name, cities[activeStep+1].dt));
   };
-
+  
   const handleBack = () => {
     setActiveStep(
       (prevActiveStep) => (prevActiveStep - 1 + maxSteps) % maxSteps
     );
+    dispatch(updateCityData(cities[activeStep-1].name, cities[activeStep-1].dt));
   };
 
   const handleStepChange = (step) => {
@@ -43,6 +48,20 @@ function Slider() {
     // Eğer aktif şehir değişirse, aktif adımı güncelleyin
     setActiveStep(activeStepIndex >= 0 ? activeStepIndex : 0);
   }, [activeCity, activeStepIndex]);
+
+  // React.useEffect(() => {
+  //   dispatch(updateCityData(cities[activeStep].name))
+  // }, [activeStep]);
+
+
+//   React.useEffect(() => {
+//   // const twoHoursInSeconds = 3 * 60;
+//   // const nowInSeconds = Math.floor(Date.now() / 1000); // milisaniyeyi saniyeye çevir
+//   // && nowInSeconds - cities[activeStep].dt > twoHoursInSeconds
+//   if (activeCity !== cities[activeStep].name){
+//     dispatch(updateCityData(cities[activeStep].name));
+//   }
+// }, [activeStep]);
 
   return (
     <Box sx={{ width: "100%", maxWidth: 700, flexGrow: 1 }}>

@@ -31,9 +31,9 @@ Uygulamanın canlı demosunu aşağıdaki bağlantıdan inceleyebilirsiniz:
 Projeyi yerelde çalıştırmak için:
 
 1. GitHub'dan repoyu klonlayın:
-   ```bash
-   git clone https://github.com/muratokur3/TheWeather.git
-   
+```bash
+git clone https://github.com/muratokur3/TheWeather.git
+```   
 2. Uygulamanın düzgün çalışabilmesi için, OpenWeatherMap API anahtarınızı içeren bir .env dosyası oluşturmanız gerekmektedir. Aşağıdaki değişkenleri .env dosyanıza ekleyin:
 ```bash
 REACT_APP_WEATHER_API_URL=https://api.openweathermap.org/data/2.5
